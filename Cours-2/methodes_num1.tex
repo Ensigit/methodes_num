@@ -393,4 +393,101 @@ SOR converge si $\rho(\mathcal{L}_{\omega}<1$)
     \caption{Exemples pratiques}
     \label{fig:tableau}
 \end{figure}
+
+\section{Méthode de Gauss pour système linéaire et factorisation LU}
+
+$Ax=b, A \in M_n(\R)$, inversible, $b \in \R^n$.
+
+\begin{equation}
+    \left\lbrace
+    \begin{array}{ccc}
+        a_{11}X_1 + a_{12}X_2+ \dots+ a_{1n}X_n & = & b_1 \\
+        \vdots \\
+        a_{n1}X_1 + a_{n2}X_2 + \dots + a_{nn}X_n & = & b_1
+    \end{array}\right.
+\end{equation}
+
+En notant $L_i = (a_{i1}, \dots, a_{in}$ la $i^{ème}$ ligne de $A$, on a
+\begin{equation}
+    \left\lbrace
+    \begin{array}{ccc}
+        L_1 X = b_1 \\
+        \vdots \\
+        L_n X = b_n
+    \end{array}\right.
+    \tag{S}
+    \label{eq:S}
+\end{equation}
+
+Si $a_{11} \neq 0$, on peut éliminer la variable $x_1$ dans les lignes 2 à $n$. On dit qu'on choisit $a_{11}$ comme \underline{pivot}.
+$(S)$ équivaut à :
+\[
+    \left\lbrace
+    \begin{array}{ccc}
+        L_{1}X & = & b_1 \\
+        (L_i - \frac{a_{i1}}{a_{11}}L_1) X & = & b_i - \frac{a_{i1}}{a_{11}}b_1 
+    \end{array}\right.
+    \hspace{2cm} i = 2..n
+\]
+
+Le nouveau système s'écrit $A^{(2)}X =b^{(2)}$ avec
+
+\[
+    A = 
+    \begin{pmatrix}
+        a_{11}^{(1)} & \cdots & a_{1n}^{(1)} \\
+        0 \\
+        \vdots \\
+        0
+    \end{pmatrix} 
+    ,
+    (a_{ij}^{(1)} = a_{ij})
+\]
+
+Ligne $i = L_i - l_{i1}L_1$ avec $l_{i1} = \frac{a_{i1}}{a_{11}}$
+
+$b_i^{(2)} =  b_i - l_{i1}b_1$
+
+Si $a_{11}$ on permute la 1ère ligne de \ref{eq:S} avec une autre ou $a_{i1} \neq 0$. Cela est toujours possible puisque $A$ est inversible.
+On effectue la même procédure que précédemment expliqué.
+
+Le système $A^{(2)} X = b^{(2)}$ contient un sous-système de dimension $n-1$ pour $x_2\dots x_n$
+On répète la même procédure sur le sous-système pour éliminer $X_2$ des lignes 3 à $n$.
+
+On continue ainsi et on déduit
+\[
+    A^{(3)}X = b^{(3)}, A^{(4)}X = b^{(4)}, \dots, A^{(n)}X=b^{(n)}
+\]
+Le dernier système obtenu est triangulaire. Notons $A^{(n)}=U$, $b^{(n)}=C$.
+
+\begin{equation}
+    \left\lbrace
+    \begin{array}{ccccccc}
+        u_{11}x_1 & + & \dots & + & u_{1n}x_n & = & c_1 \\
+                  & u_{22}x_2 + & \dots & + & u_{2n}x_n & = & c_2 \\
+        & & & \ddots \\
+        & & & & u_{nn}x_n & = & c_n \\
+    \end{array}\right.
+    \tag{S'}
+    \label{eq:S2}
+\end{equation}
+
+\ref{eq:S2} est facile à résoudre : \underline{``étape de remontée''}.
+\[
+    x_{nn} = \frac{c_n}{x_{nn}}, x_i = \frac{1}{u_{ii}}(c_i - \sum_{j=i+1}^{n}u_{ij}x_j )
+\] pour $i = n-1, \dots, 1$
+
+\begin{remark}
+    On appelle \underline{``factorisation''} le calcul de $U$.
+\end{remark}
+
+
 \end{document}
+
+
+
+\end{document}
+
+
+
+
