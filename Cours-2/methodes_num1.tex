@@ -26,6 +26,9 @@
 \usepackage[standard,framed]{ntheorem}
 \usepackage{framed}
 
+
+\newcommand{\reff}[1]{(\ref{#1})}
+
 \setlength{\parindent}{30pt}
 \setlength{\parskip}{1ex}
 \setlength{\textwidth}{15cm}
@@ -167,17 +170,17 @@ On considère une décomposition de A (``splitting'') $A=M-N$ avec $M$ inversibl
 \end{array}\right.
 \end{equation}
 
-Si $x_k \to x$ quand $k \to +\infty$ alors $Mx = Nx + b$, càd $x$ est solution de (\ref{eq:eqdiff}).
+Si $x_k \to x$ quand $k \to +\infty$ alors $Mx = Nx + b$, càd $x$ est solution de \reff{eq:eqdiff}.
 
 Le choix du splitting est très important pour la performance de la méthode :
 \begin{itemize}
     \item Bien sûr la méthode doit être convergente (voir plus loin)
-    \item On doit choisir $M$ de telle sorte que le système (\ref{eq:2}) soit beaucoup plus facile à résoudre que (\ref{eq:eqdiff}) (il faut résoudre (\ref{eq:2}) à chaque étape de l'itération).
+    \item On doit choisir $M$ de telle sorte que le système \reff{eq:2} soit beaucoup plus facile à résoudre que \reff{eq:eqdiff} (il faut résoudre \reff{eq:2} à chaque étape de l'itération).
 
         \underline{Exemples :} $M$ diagonale ou triangulaire, diagonale ou triangulaire par blocs.
 \end{itemize}
 
-Étudions les conditions de convergence de (\ref{eq:2}).
+Étudions les conditions de convergence de \reff{eq:2}.
 
 \begin{fdef}
     Étant donné $A \in M_n(\C)$, on note $S_p(A)$ l'ensemble des valeurs propres de $A$ (ou ``spectre de A''). On appelle rayon spectral de $A$ et on note $\rho(A)$ :
@@ -187,10 +190,10 @@ Le choix du splitting est très important pour la performance de la méthode :
 \end{fdef}
 
 \begin{ftheo}
-    La méthode (\ref{eq:2}) converge si et seulement si $$\rho(M^{-1}N) < 1$$
+    La méthode \reff{eq:2} converge si et seulement si $$\rho(M^{-1}N) < 1$$
 \end{ftheo}
 
-La preuve complète de ce résultat sera étudiée en TD. Ici nous allons simplement montrer que $\rho(M^{-1}N)<1 \Rightarrow $ convergence de (\ref{eq:2}), en admettant pour cela deux résultats.
+La preuve complète de ce résultat sera étudiée en TD. Ici nous allons simplement montrer que $\rho(M^{-1}N)<1 \Rightarrow $ convergence de \reff{eq:2}, en admettant pour cela deux résultats.
 
 \begin{ftheo}[de l'application contractante (dans $\R^n$) ]
     Soit $E$ un sous-ensemble de $\R^n$ fermé (et non vide). On considère une norme $\| \, \|$ sur $\R^n$.
@@ -210,7 +213,7 @@ converge vers $x^*$, avec
     \label{eq:3}
 \end{equation}
 
-Le système (\ref{eq:2}) s'écrit :
+Le système \reff{eq:2} s'écrit :
 
 \begin{equation}
 \left\lbrace
@@ -244,12 +247,12 @@ Si $\rho (M^{-1}N) < 1$, il existe donc une norme matricielle induite telle que 
 
 Donc $F : \R^n \rightarrow \R^n$ est une contraction.
 
-Donc $\forall x_0 \in R^n$, la suite définie par (\ref{eq:4}) converge vers une limite $x \in \R^n$ unique, solution de $x = M^{-1}Nx+M^{-1}b$, c'est-à-dire $Ax=b$.
+Donc $\forall x_0 \in R^n$, la suite définie par \reff{eq:4} converge vers une limite $x \in \R^n$ unique, solution de $x = M^{-1}Nx+M^{-1}b$, c'est-à-dire $Ax=b$.
 
 % Je ne sais pas comment présenter ces points
 \vspace{1cm}
 \underline{Vitesse de convergence :} Plus $\rho(M^{-1}N)$ est petit, plus $\|M^{-1}N\|$ peut être choisie petite et plus la convergence est rapide.
-En effet, d'après (\ref{eq:3}) :
+En effet, d'après \reff{eq:3} :
 \[
     \|x-x_k\| \leq \frac{\|M^{-1}N\|^k}{1-\|M^{-1}N\|}\|x_1-x_0\|
 \]
@@ -264,7 +267,7 @@ En effet, d'après (\ref{eq:3}) :
 Elle converge si et seulement si $\forall \lambda \in Sp(A), |1-\alpha \lambda | < 1$, c'est-à-dire toutes les valeurs propres de A se trouvent dans le disque (ouvert) de centre $(\frac{1}{\alpha}$ et rayon $\frac{1}{\alpha}$.
 
 \section{Méthode de Jacobi}
-On pose dans schéma (\ref{eq:2}) :
+On pose dans schéma \reff{eq:2} :
 \[
     M = D \mbox{ avec $D$ diagonale et } d_{ii}=a_{ii}, \qquad N=D-A
 \]
@@ -448,7 +451,7 @@ Ligne $i = L_i - l_{i1}L_1$ avec $l_{i1} = \frac{a_{i1}}{a_{11}}$
 
 $b_i^{(2)} =  b_i - l_{i1}b_1$
 
-Si $a_{11}$ on permute la 1ère ligne de \ref{eq:S} avec une autre ou $a_{i1} \neq 0$. Cela est toujours possible puisque $A$ est inversible.
+Si $a_{11}$ on permute la 1ère ligne de \reff{eq:S} avec une autre ou $a_{i1} \neq 0$. Cela est toujours possible puisque $A$ est inversible.
 On effectue la même procédure que précédemment expliqué.
 
 Le système $A^{(2)} X = b^{(2)}$ contient un sous-système de dimension $n-1$ pour $x_2\dots x_n$
@@ -472,7 +475,7 @@ Le dernier système obtenu est triangulaire. Notons $A^{(n)}=U$, $b^{(n)}=C$.
     \label{eq:S2}
 \end{equation}
 
-\ref{eq:S2} est facile à résoudre : \underline{``étape de remontée''}.
+\reff{eq:S2} est facile à résoudre : \underline{``étape de remontée''}.
 \[
     x_{nn} = \frac{c_n}{x_{nn}}, x_i = \frac{1}{u_{ii}}(c_i - \sum_{j=i+1}^{n}u_{ij}x_j )
 \] pour $i = n-1, \dots, 1$
