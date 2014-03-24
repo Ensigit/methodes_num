@@ -1,0 +1,204 @@
+% definit le type de document et ses options
+\documentclass[a4paper,11pt]{article}
+
+% des paquetages utiles classiques, en ajouter d'autres selon vos besoins
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb,calc}
+% \usepackage{fullpage}
+% \usepackage{stmaryrd}
+% \usepackage{url}
+% \usepackage{xspace}
+\usepackage[francais]{babel}
+
+% Pour les figures
+\usepackage{graphicx}
+
+% Pour les listes à puces
+\usepackage{enumitem}
+
+\usepackage{indentfirst}
+
+% Évite un conflit entre french babel et enumitem
+\frenchbsetup{StandardLists=true}
+
+\usepackage[standard,framed]{ntheorem}
+\usepackage{framed}
+
+% Pour des commentaires à droite d'équations
+\newenvironment{rcases}
+  {\left.\begin{aligned}}
+  {\end{aligned}\right\rbrace}
+
+\newenvironment{lcases}
+  {\left\lbrace\begin{aligned}}
+  {\end{aligned}\right.}
+
+
+\newcommand{\reff}[1]{(\ref{#1})}
+
+
+\setlength{\parindent}{30pt}
+\setlength{\parskip}{1ex}
+\setlength{\textwidth}{15cm}
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0.2cm}
+\setlength{\evensidemargin}{-.7cm}
+\setlength{\topmargin}{-.5in}
+
+% des commandes pratiques pour ecrire des maths :
+\newcommand{\dx}{\,dx}
+\newcommand{\dt}{\,dt}
+\newcommand{\ito}{,\dotsc,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Poly}[1]{\mathcal{P}_{#1}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\pars}[1]{\left(#1\right)}
+\newcommand{\bigpars}[1]{\bigl(#1\bigr)}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\tpo}[1]{\,^t#1}
+
+
+\DeclareMathOperator{\Sup}{Sup}
+\DeclareMathOperator{\Max}{Max}
+
+%
+%\lstset{
+%  literate=%
+%  {À}{{\`A}}1 {Â}{{\^A}}1 {Ç}{{\c{C}}}1%
+%  {à}{{\`a}}1 {â}{{\^a}}1 {ç}{{\c{c}}}1%
+%  {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {Ë}{{\"E}}1% 
+%  {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1%
+%  {Ï}{{\"I}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1%
+%  {ï}{{\"i}}1 {î}{{\^i}}1 {ô}{{\^o}}1%
+%  {Ù}{{\`U}}1 {Û}{{\^U}}1 {Ü}{{\"U}}1%
+%  {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1%
+%}
+
+\newlength\dlf
+\newcommand\alignedbox[2]{
+  % #1 = before alignment
+  % #2 = after alignment
+    &
+    \begingroup
+    \settowidth\dlf{$\displaystyle #1$}
+    \addtolength\dlf{\fboxsep+\fboxrule}
+    \hspace{-\dlf}
+    \boxed{#1 #2}
+\endgroup
+}
+
+%%%%% PACKAGE AMSTHM :
+% \newtheoremstyle{definition}
+%   {20pt}   % ABOVESPACE
+%   {20pt}   % BELOWSPACE
+%   {}  % BODYFONT
+%   {0pt}       % INDENT (empty value is the same as 0pt)
+%   {\bfseries} % HEADFONT
+%   {.}         % HEADPUNCT
+%   {5pt plus 1pt minus 1pt} % HEADSPACE
+%   {}          % CUSTOM-HEAD-SPEC
+
+\newframedtheorem{ftheo}[theorem]{Theoreme}
+
+\theoremstyle{plain} % default
+\theorembodyfont{\normalfont}
+\newframedtheorem{fdef}[definition]{Définition}
+
+\renewtheorem{remark}{Remarque}
+
+\newframedtheorem{coroll}{Corollaire}
+
+\newtheorem{rappel}{Rappel}
+
+\newtheorem{preuve}{Preuve}
+
+\title{\huge \bfseries Factorisation de Cholesky}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+RECOPIER L'INTRO
+
+$A$ symétrique et définie positive (def > 0)
+
+\begin{remark}
+    $A$ est symérique et définie positive si et seulement si :
+    \begin{enumerate}
+        \item $^tA = A$
+        \item $^tXAX \geq 0, \forall x \in \R$
+        \item $^tXAX = 0 \Rightarrow X = 0$
+    \end{enumerate}
+
+    $A$ définie positive $\Rightarrow$ $A$ inversible
+    $A$ symétrique $\Rightarrow$ $A$ diagonalisable. $\exists P / A = P^{-1}DP$
+    $A$ symétrique et définie positive $\Rightarrow$ toutes les valeurs propres de $A$ sont positives et réelles.
+\end{remark}
+
+\begin{ftheo}
+    Soit $A \in M_n(\R)$ symétrique définie positive. Il existe (au moins) une matrice réelle triangulaire inférieure $T$ telle que :
+    \[
+        A = T \,^tT
+    \]
+    De plus, si on impose que les éléments diagonaux de T soient tous positifs, alors la factorisation $A = T \,^tT$ est unique.
+\end{ftheo}
+
+
+\begin{preuve}[Existence]
+    Notons $\Delta_k$ la sous-matrice d'éléments $a_{ij}, 1 \leq i,j \leq k$.
+    $\Delta_k$ sont inversibles car elles sont symétriques et définies positives.
+    Donc d'après le théorème 1 du précédent chapitre :
+    \[
+        A = LU \text{ avec } L =
+        \begin{pmatrix}
+            1 & 0      & \dots  & 0 \\
+            - & \ddots & \dots  & 0 \\
+            - & -      & \ddots & 0 \\
+            - & -      & -      & 1 \\
+        \end{pmatrix}
+    \]
+    trou
+\end{preuve}
+
+
+Notons $D=diag(u_{ij})$. On a  $A=\tpo A = \tpo U \tpo L = \tpo U D^{-1} D \tpo L$
+Par unicité de la factorisation LU, il vient $D \tpo L = U$ et donc 
+\[
+    A = L D \tpo L
+\]
+    $\Rightarrow$ $A$ et $D$ ont la même signature.
+
+    $A$ symétrique définie positive
+    \begin{itemize}
+        \item [$\Rightarrow$] Toutes les valeurs propres de A sont positives.
+        \item [$\Rightarrow$] Toutes les valeurs propres de D sont positives
+
+            $\Leftrightarrow u_{ii} > 0 \forall i$
+    \end{itemize}
+
+    Si $\delta_i = \sqrt{u_{ii}}$ et $\Delta = 
+    \begin{pmatrix}
+        \delta_1 & \dots & 0 \\
+        & \ddots & \\
+        0 & \dots & \delta_n
+    \end{pmatrix}
+    = diag(\sqrt{u_{ii}})$
+
+    $D = \Delta^2 = \Delta \tpo \Delta$
+
+    $\Rightarrow A = L \Delta \tpo \Delta \tpo L = (L\Delta)\tpo (L\Delta)$
+
+
+
+\end{document}
+
+
+
+
