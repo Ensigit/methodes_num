@@ -12,6 +12,9 @@
 % \usepackage{xspace}
 \usepackage[francais]{babel}
 
+% Pour les matrices annotées ... 
+\usepackage{blkarray}
+
 % Pour les figures
 \usepackage{graphicx}
 
@@ -26,12 +29,21 @@
 \usepackage[standard,framed]{ntheorem}
 \usepackage{framed}
 
+% Pour les matrices par blocs je crois ?
 \makeatletter
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep
   \let\@ifnextchar\new@ifnextchar
   \array{#1}}
 \makeatother
+
+% Pour des matrices agrandies :
+\newenvironment{bigmatrix}[2]{%
+  \renewcommand*{\arraystretch}{#1}% 
+  \begin{pmatrix}[#2]
+}{%
+  \end{pmatrix}
+}
 
 % Pour des commentaires à droite d'équations
 \newenvironment{rcases}
@@ -134,7 +146,7 @@
 
 Soit $A \in M_n(\R)$ inversible et $b \in \R^n$. La méthode de Gauss permet de résoudre le système $Ax=b$, $x \in \R^n$ en se ramenant à la résolution d'un système triangulaire.
 Nous allons commencer par rappeler cette méthode classique de résolution des systèmes linéaires. Il s'agit d'une \underline{méthode directe}, càd qui donne la solution exacte un nombre fini d'opérations arithmétiques élémentaires.
-Nous verrosn ensuite que l'élimination de Gauss fournit une factorisation $A = LU$ (ou $PA = LU$, $P$ étant une matrice de permutation, dépendant du choix des pivots)
+Nous verrons ensuite que l'élimination de Gauss fournit une factorisation $A = LU$ (ou $PA = LU$, $P$ étant une matrice de permutation, dépendant du choix des pivots)
 avec $L$ triangulaire inférieure et $U$ triangulaire supérieure.
 Résoudre $Ax=b \Leftrightarrow PAx = Pb \Leftrightarrow LUx = Pb$ revient donc à :
 
@@ -166,7 +178,7 @@ Soit $A \in M_n(\R)$ inversible et $b \in \R^n$. On cherche $x \in \R^n$ tel que
 \end{equation}
 
 
-En notant $L_i = (a_{i1}, \dots, a_{in}$ la $i^{ème}$ ligne de $A$, on a
+En notant $L_i = (a_{i1}, \dots, a_{in})$ la $i^{ème}$ ligne de $A$, on a
 \begin{equation}
     \left\lbrace
     \begin{array}{ccc}
@@ -325,6 +337,162 @@ Soit matriciellement :
         \end{matrix} 
     \end{pmatrix}
 \]
+
+\[
+    l_{ij} = \frac{a^{(j-1)}_{ij}}{a^{(j-1)}_{jj}} , \hspace{0.5cm} I_k = \text{matrice identité de taille $k$}
+\]
+
+    En effet : 
+\[
+    \begin{blockarray}{cccc}
+        \begin{block}{c(ccc)}
+            & & 0 & \\
+            \cline{2-4}
+            & & 0 & \\
+            \cline{2-4}
+            \text{\scalebox{0.7}{ligne $i \rightarrow$}} & 0 \dots 0 & 1 & 0 \dots 0 \\
+            \cline{2-4}
+            & & 0 & \\
+            \cline{2-4}
+            & & 0 & \\
+        \end{block}
+        & & \text{\scalebox{0.7}{$\uparrow$ colonne $j$}} & & \\
+    \end{blockarray}
+    \times
+    \begin{pmatrix}
+        L_1 \\ \hline
+        L_2 \\ \hline
+        \vdots \\ \hline
+        L_n
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        0 \\ \hline
+        0 \\ \hline
+        L_j \\ \hline
+        0 \\ \hline
+        0
+    \end{pmatrix} \text{$\leftarrow$ ligne $j$}
+\]
+
+On a donc :
+\[
+    U = A^{(n-1)} = T_{n-1} \times T_{n-2} \times \dots \times T_1 \times PA = TPA
+\]
+Avec $U$ triangulaire supérieure et $T$ triangulaire inférieure (produit de matrices triangulaires inférieures).
+
+Donc on a $PA=LU$ avec $L=T^{-1}$ triangulaire inférieure (l'inverse d'une matrice triangulaire inférieure l'est aussi).
+
+\begin{remark}
+    Dans $\ref{eq:S2}$ on a $C=TPb$ et donc $LC=Pb$.
+\end{remark}
+
+% l_ij à afficher en plus grand ... 
+Soit maintenant :\[
+    \tilde{L} =
+    \begin{pmatrix}
+        1 & & \scalebox{1.2}{0} \\
+        & \ddots & \\
+        l_{ij} & & 1
+    \end{pmatrix}
+\]
+
+On a : 
+\[
+    T_1 \tilde{L} =
+    \begin{pmatrix}
+        1      &        &        & 0 \\
+        0      & 1      &        &   \\
+        \vdots &        & \ddots &   \\
+        0      & l_{ij} &        & 1
+    \end{pmatrix}
+    , \dots , T_{n-1} \times T_{n-2} \times T_1 \tilde{L} = I
+\]
+
+Donc $L = \tilde{L}$. Nous avons donc montré le résultat suivant :
+
+\begin{ftheo}[Factorisation LU d'une matrice inversible]
+    Soit $A \in M_n(\R)$ inversible. Il existe une matrice de permutation $P$
+et deux matrices triangulaires L (triangulaire inférieure de diagonale unité) et $U$ (triangulaire supérieure inversible) telles que $PA = LU$.
+
+    Cette décomposition est donnée explicitement par l'élimination de Gauss, avec 
+    (les coefficients $l_{ij}$ sont ceux de l'élimination de Gauss sur $\tilde{A}$) :
+
+    \[
+        L = \begin{pmatrix}
+            1 & & 0 \\
+            & \ddots & \\
+            l_{ij} & & 1 \\
+        \end{pmatrix}
+        , U =
+        \begin{pmatrix}
+            \ddots & & U_{ij} \\
+            & \ddots & & \\
+            0 & &
+        \end{pmatrix}
+    \]
+
+    Cette factorisation est unique lorsque l'on fixe P.
+    \label{th:factoLU}
+\end{ftheo}
+
+\begin{remark}
+    L'unicité s'obtient simplement :
+    $PA$ est inversible (puisque $P$ et $A$ le sont).
+
+    Si $PA = L_1 U_1 = L_2 U_2$ alors $L_i$ et $U_i$ sont inversibles et donc
+    $L^{-1}_2 L_1 = U_2 U^{-1}_1$. Le membre de droite est triangulaire supérieur, celui de gauche et triangulaire inférieur de diagonale unité.
+
+    Donc $L^{-1}_2 L_1 = U_2 U^{-1}_1 = I$, i.e. $L1 = L2$ et $U_1 = U_2$.
+\end{remark}
+
+\vspace{0.7cm}
+Les permutations effectuées lors de l'élimination de Gauss sont très importantes d'un point de vue numérique (voir plus loin).
+Bien sûr, si l'on raisonne en arithmétique exacte (sans tenir compte des erreurs d'arrondi)
+on voit dans l'algorithme de Gauss que les cas nécessiteant une permutation sont
+exceptionnels (cela se produit lorsque $a_{11}$ ou $a^{(i)}_{i+1,i+1}=0$ pour certaines valeurs de $i$).
+
+On a plus précisément le résultat suivant :
+
+\begin{ftheo}
+    Dans le théorème \ref{th:factoLU}, si les $n$ sous-matrices
+    \[\Delta = \begin{pmatrix}
+        a_{11} & \dots a_{1i} \\
+        \vdots & & \vdots \\
+        a_{i1} & \dots & a_{ii}
+    \end{pmatrix}
+, (1 \leq i \leq n) \]
+    sont inversibles, alors on peut fixer $P = I$.
+\end{ftheo}
+
+\begin{preuve}
+    $a_{11} \ne 0$ donc la 1\up{ère} de l'élimination de Gauss ne nécessite pas de permutation.
+    Supposons qu'on ait $j$ étapes sans permutation :
+    \[
+        A^{(j)} =
+        \begin{pmatrix}[c|c]
+            U^{(j)} & X \\ \hline
+            0 & X
+        \end{pmatrix}
+        = T_j T_{j-1} \times \dots \times T_1 \times A =
+        \begin{pmatrix}[c|c]
+            \begin{matrix}
+                1 & & 0 \\
+                & \ddots & \\
+                X & & 1
+            \end{matrix}
+            & \begin{matrix}[ccc]\\ & 0 & \\ \end{matrix}
+            \\ \hline
+            \begin{matrix}[ccc]\\ & X & \\ \end{matrix}
+            & \begin{matrix}[ccc]\\ & I & \\ \end{matrix}
+        \end{pmatrix}
+        \begin{bigmatrix}{2.5}{c|c}
+            \Delta_j & X \\
+            \hline
+            X & X
+        \end{bigmatrix}
+    \]
+\end{preuve}
 
 \section{Le coût de la méthode de Gauss}
 
