@@ -85,6 +85,7 @@
 
 \DeclareMathOperator{\Sup}{Sup}
 \DeclareMathOperator{\Max}{Max}
+\DeclareMathOperator{\Det}{Det}
 
 %
 %\lstset{
@@ -152,8 +153,8 @@ Résoudre $Ax=b \Leftrightarrow PAx = Pb \Leftrightarrow LUx = Pb$ revient donc 
 
 \begin{enumerate}
     \item Factoriser $PA$
-    \item Résoudre $Lc = Pb$ (étape de \underline{descente} $c_1 \to c_2 \to \dots \to c_n$
-    \item Résoudre $Ux = c$ (étape de \underline{remontée} : $x_n \to x_{n-1} \to \dots \to x_1$
+    \item Résoudre $Lc = Pb$ (étape de \underline{descente}) $c_1 \to c_2 \to \dots \to c_n$
+    \item Résoudre $Ux = c$ (étape de \underline{remontée}) : $x_n \to x_{n-1} \to \dots \to x_1$
 \end{enumerate}
 
 Si on doit résoudre de nombreuses fois avec la même matrice :
@@ -457,15 +458,15 @@ On a plus précisément le résultat suivant :
 \begin{ftheo}
     Dans le théorème \ref{th:factoLU}, si les $n$ sous-matrices
     \[\Delta = \begin{pmatrix}
-        a_{11} & \dots a_{1i} \\
+        a_{11} & \dots & a_{1i} \\
         \vdots & & \vdots \\
         a_{i1} & \dots & a_{ii}
     \end{pmatrix}
-, (1 \leq i \leq n) \]
+, (1 \leq i \leq n)\]
     sont inversibles, alors on peut fixer $P = I$.
 \end{ftheo}
 
-\begin{preuve}
+\begin{proof}
     $a_{11} \ne 0$ donc la 1\up{ère} de l'élimination de Gauss ne nécessite pas de permutation.
     Supposons qu'on ait $j$ étapes sans permutation :
     \[
@@ -492,7 +493,108 @@ On a plus précisément le résultat suivant :
             X & X
         \end{bigmatrix}
     \]
-\end{preuve}
+    avec $U^{(j)} \in M_j(\R)$ de la forme 
+    $\begin{pmatrix} 
+        a_{11} & & & X \\
+        & a_{22}^{(1)} & & \\
+        & & \ddots & \\
+        0 & & & a_{jj}^{(j)}
+    \end{pmatrix}$
+    (les coefficients diagonaux sont les pivots).
+
+    Alors on a aussi :
+    \[
+        %%%
+        A^{(j)} =
+        \begin{pmatrix}[c|c]
+            \begin{matrix}[ccc]
+                \\
+                & U^{(j+1)} & \\
+            \end{matrix}
+            &
+            \begin{matrix}[ccc]
+                \\
+                & X & \\
+            \end{matrix}
+            \\ \hline
+            \begin{matrix}[cc|c]
+               \\
+               0 & & X \\
+            \end{matrix}
+            &
+            \begin{matrix}[ccc]
+                \\
+                & X & \\
+            \end{matrix}
+        \end{pmatrix}
+        %%%
+        =
+        %%%
+        \begin{pmatrix}[c|c]
+            \begin{matrix}
+                1 & & 0 \\
+                & \ddots & \\
+                X & & 1
+            \end{matrix}
+            & \begin{matrix}[ccc]\\ & 0 & \\ \end{matrix}
+            \\ \hline
+            \begin{matrix}[ccc]\\ & X & \\ \end{matrix}
+            & \begin{matrix}[ccc]\\ & I & \\ \end{matrix}
+        \end{pmatrix}
+        \begin{bigmatrix}{2.5}{c|c}
+            \Delta_{j+1} & X \\
+            \hline
+            X & X
+        \end{bigmatrix}
+    \]
+
+    avec $U^{(j+1)} = 
+    \begin{pmatrix} 
+        a_{11} & & & X \\
+        & a_{22}^{(1)} & & \\
+        & & \ddots & \\
+        0 & & & a_{j+1,j+1}^{(j)}
+    \end{pmatrix}$.
+    Donc $U^{(j+1)} = 
+            \begin{pmatrix}
+                1 & & 0 \\
+                & \ddots & \\
+                X & & 1
+            \end{pmatrix}
+            \times \Delta_{j+1}$
+            
+            D'où : $a_{11} \times a_{22}^{(1)} \times \dots \times a^{(j)}_{(j+1),(j+1)} = \Det U^{(j+1)} = \Det \Delta_{j+1} \ne 0$ 
+\end{proof}
+
+Donc $a^{(j)}_{j+1,j+1} \ne 0$ et on peut choisir ce coefficient comme pivot pour l'étape $j+1$.
+
+Par récurrence, on peut donc choisir les coefficients $a_{11}, a_{i+1,i+1}^{(i)}$ comme pivots, puisque tous ces coefficients sont $\ne 0$. On obtient donc le résultat du théorème \ref{th:factoLU} avec $P=I$.
+
+
+\begin{remark}
+    Les coefficients $l_{ij}$ du théorème \ref{th:factoLU} sont ceux qui apparaissent dans l'élimination de Gauss faite sur $\tilde{A}$. Cependant, ils peuvent aussi se calculer directement à partir de l'élimination de Gauss faite sur A. Pour cela, quand on permute deux lignes de $A$, on réalise la même permutation sur les coefficients $l_{ij}$ calculés précédemment (cf TD pour un exemple).
+
+    La remarque suivante détaille pourquoi ce procédé fonctionne.
+\end{remark}
+
+\begin{remark}[Permutation des coefficients $l_{ij}$ lors de l'élimination de Gauss]
+    Soit $P$ la matrice de permutation telle que $P_{l_{i}} = e_{P_i}$.
+    Alors :
+    \[
+        \begin{pmatrix}[c|c|c|c]
+            c_1 & c_2 & \dots & c_n
+        \end{pmatrix}
+        .
+        P
+        =
+        \begin{matrix}[cc]
+        \begin{pmatrix}[cc|c|cc]
+            & & c_{p_i} & & 
+        \end{pmatrix}
+        \end{matrix}
+    \]
+\end{remark}
+
 
 \section{Le coût de la méthode de Gauss}
 
@@ -582,6 +684,7 @@ $\Rightarrow$ Donc la méthode de Gauss nécessite $\frac{2}{3}n^3+O(n^2)$ opér
   1 & 2 & 3
 \end{pmatrix} 
 \]
+
 \end{document}
 
 
