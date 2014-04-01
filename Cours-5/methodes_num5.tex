@@ -82,6 +82,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\gO}{\mathcal{O}}
 \newcommand{\Poly}[1]{\mathcal{P}_{#1}}
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
@@ -162,13 +163,13 @@ De nombreux problèmes issus notamment de la physique conduisent à la résoluti
 
 \section{Méthode des approximations successives}
 
-À partir d'une équation $f(x) = 0$ ($f : \R^n \to R^n$ de classe $\mathcal{C}^1$),
+À partir d'une équation $f(x) = 0$ ($f : \R^n \longrightarrow R^n$ de classe $\mathcal{C}^1$),
 on peut se ramener à un problème de point fixe :
 \begin{equation}
     x = \Phi(x)
     \label{eq:ptfixe}
 \end{equation}
-avec $\Phi : \R^n \to \R^n$ de classe $\mathcal{C}^1$. On peut poser par exemple :
+avec $\Phi : \R^n \longrightarrow \R^n$ de classe $\mathcal{C}^1$. On peut poser par exemple :
 \begin{equation*}
     \Phi(x) = x - B f(x)
 \end{equation*}
@@ -202,7 +203,7 @@ Nous allons étudier la convergence de ce type de méthodes itératives.
 Lorsque $a$ est asymptotiquement stable, la méthode (\ref{eq:methodeiterative}) permet de calculer numériquement $a$ à partir d'une condition initiale $x_0$ ``suffisamment proche'' de $a$.
 
 \begin{ftheo}
-    Soit $\Omega$ un ouvert de $\R^n$ et $\Phi : \Omega \to \R^n$ de classe $\mathcal{C}^1$.
+    Soit $\Omega$ un ouvert de $\R^n$ et $\Phi : \Omega \longrightarrow \R^n$ de classe $\mathcal{C}^1$.
     Soit $a \in \Omega$ un point fixe de $\Phi$, i.e. $\Phi(a) = a$. Alors :
     \begin{enumerate}[a)]
         \item Si $\rho \Big(D\Phi(a) \Big) < 1$ alors $a$ est asymptotiquement stable.
@@ -274,9 +275,9 @@ laquelle $\norm{D\Phi(a)}<1$.
 \end{remark}
 
 \subsection*{Critères d'arrêt :}
-On se donne une tolérance absolue $tol$ (on pourrait aussi travailler en relatif)
 \begin{enumerate}[a)]
     \item
+        On se donne une tolérance absolue $tol$ (on pourrait aussi travailler en relatif)
         \[
               \norm{x_k - x_{k-1}} < tol
         \]
@@ -316,9 +317,170 @@ On se donne une tolérance absolue $tol$ (on pourrait aussi travailler en relati
         On fait maintenant l'approximation :
         \begin{align*}
             \sum_{j \geq k} \norm{x_j - x_{j+1}} & \simeq \norm{x_k - x_{k+1}} \times \sum_{j \geq 0} \lambda ^j \simeq \frac{\lambda}{1 - \lambda} \norm{x_k - x_{k-1}} \\
-            & \simeq \frac{\norm{x_k - x_{k-1}}}{\norm{x_{k-1}x_{k-2}}} \times \frac{1}{1-\frac{\norm{x_k - x_{k-1}}}{\norm{x_{k-1}-x_{k-2}}}} \norm{x_k - x_{k-1}}
+            & \simeq \frac{\norm{x_k - x_{k-1}}}{\norm{x_{k-1} - x_{k-2}}} \times \frac{1}{1-\frac{\norm{x_k - x_{k-1}}}{\norm{x_{k-1}-x_{k-2}}}} \norm{x_k - x_{k-1}} \\
+            & = \frac{\norm{x_k - x_{k-1}}^2}{\norm{x_{k-1} - x_{k-2}} - \norm{x_k - x_{k-1}}}
         \end{align*}
+
+        On en déduit le critère d'arrêt :
+        \begin{equation*}
+            \left\lbrace
+            \begin{array}{c}
+                \displaystyle\frac{\norm{x_k - x_{k-1}}^2}{\norm{x_{k-1} - x_{k-2}} - \norm{x_k - x_{k-1}}} < tol \\
+                \\
+                \norm{x_k - x_{k-1}} < \norm{x_{k-1} - x_{k-2}}
+            \end{array}
+            \right.
+            \tag{c}
+        \end{equation*}
 \end{enumerate}
+
+
+        Le théorème de convergence de la méthode des approximations successives suppose que $\rho \big( D\Phi(a) \big) < 1$. 
+        Un choix tel que $\Phi(x) = x - B f(x)$ ($B \in M_n(\R)$ inversible) ne garantit pas
+        que cette hypothèse soit respectée, et que le rayon spectral soit petit 
+        (condition pour que la convergence soit rapide).
+
+        Nous allons définir un choix astucieux de fonction $\Phi$ à partir de $f$, pour
+        lequel $D\Phi(a) = 0$. Il s'agit de la méthode de Newton.
+
+\section{Méthode de Newton}
+
+    Soit $f : \R^n \longrightarrow \R^n$ de classe $\mathcal{C}^2$. On veut calculer
+    numériquement une solution de l'équation :
+    \begin{equation}
+        f(x) = 0
+    \end{equation}
+
+    Le principe de la méthode de Newton est le suivant. Si $x_0 \in \R^n$ est une approximation de la solution $x$ recherchée,
+    on linéarise $f$ autour de $x_0$ :
+    \[
+        f(x) \simeq f(x_0) + Df(x_0)(x-x_0)
+    \]
+
+    On calcule alors la solution $x_1$ de :
+    \[
+        f(x_0) + Df(x_0)(x_1 - x_0) = 0 
+    \]
+
+    Si $Df(x_0)$ est inversible, on obtient :
+    \[
+        x_1 = x_0 - Df(x_0)^{-1}f(x_0)
+    \]
+
+    Puis on prend $x_1$ comme nouvelle approximation de la solution et on recommence
+    l'opération. Cela définit la méthode itérative :
+    \begin{equation}
+        x_{k+1} = x_k - Df(x_k)^{-1}f(x_k) \underset{\text{déf}}{=} \Phi(x_k)
+        \label{eq:newton}
+    \end{equation}
+
+    \begin{remark}
+        Numériquement on ne calcule pas $Df(x_k)^{-1}$ mais on résout à chaque étape le
+        système linéaire donnant $x_{k+1}$ :
+        \[
+            Df(x_k)(x_{k+1} - x_k) = -f(x_k)
+        \]
+    \end{remark}
+
+    \subsection*{Interprétation géométrique en dimension 1 :}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.5]{newton-dim1.png}
+    \end{figure}
+
+    Nous sommes dans le cadre de la méthode des approximations successives :
+    on cherche une solution de $\Phi(x) = x$ avec $\Phi(x) = x - Df(x)^{-1}f(x)$.
+    La méthode itérative (\ref{eq:newton}) s'écrit $x_{k+1} = \Phi(x_k)$.
+
+
+    \begin{ftheo}
+        Soit $f : \R^n \longrightarrow \R^n$ de classe $\mathcal{C}^2$ au voisinage de $a \in \R^n$, avec $f(a) = 0$.
+        On suppose que $Df(a)$ est inversible. Alors la fonction $\Phi$ de l'itération
+        (\ref{eq:newton}) est $\mathcal{C}^1$ au voisinage de $a$, et $a$ est asymptotiquement
+        stable. De plus, il existe $\eta > 0$ et $\alpha > 0$ tels que si
+        $\norm{x_0 - a} < \eta$ alors :
+        \[
+            \norm{x_{k+1} - a} \leq \alpha \norm{x_k - a}^2 \hspace{0.5cm} \forall k \geq 0
+        \]
+    \end{ftheo}
+
+    \begin{remark}
+        On dit qu ela convergence de la méthode de Newton est en moyenne \underline{quadratique}.
+        On obtient par récurrence :
+        \[
+            \norm{x_k - a} \leq \frac{1}{\alpha}(\alpha \norm{x_0 - a}^{2^k}
+        \]
+        Par exemple, si $\alpha = 1$ et $\norm{x_0 - a} = 10^{-1}$, $\norm{x_4 - a} \leq 10^{-16}$.
+    \end{remark}
+
+    \begin{preuve}
+        La fonction $x \longmapsto \Det Df(x)$ est continue sur $\R^n$, et $\Det Df(a) \ne 0$,
+        donc $\exists r > 0 \; / \; \norm{x-a} < r \implies \Det Df(x) \ne 0$,
+        c'est-à-dire que $Df(x)$ est inversible. La fonction $\Phi$ définie par
+        $\Phi(x) = x - Df(x)^{-1} f(x)$ est donc $\mathcal{C}^1$ au voisinage de $x=a$.
+        On peut donc appliquer le théorème 1.
+
+        Calculons $D\Phi(a)$.
+        \begin{align*}
+            f(a+h) & = Df(a)h + \mathcal{O}(\norm{h}^2) \hspace{0.5cm} \text{ amène :} \\[6pt]
+            \Phi(a+h) & = a + h - Df(a+h)^{-1} \Big(Df(a)h + \mathcal{O}(\norm{h}^2) \Big) \\
+            & = a + h - \Big( Df(a) \gO(\norm{h} \Big) \Big( Df(a)h + \gO(\norm{h}^2) \Big) \\
+            & = a + h - \Big( I + \gO(\norm{h})^{-1} \Big) Df(a)^{-1} \Big( Df(a)h + \gO(\norm{h}^2) \Big) \\
+            & = a + h - \Big( I + \gO(\norm{h} \Big) \Big( h + \gO(\norm{h}^2) \Big) \\
+            \Phi(a+h) & = \Phi(a) + \gO(\norm{h}^2)
+        \end{align*}
+
+        Donc :
+        \[
+            D\Phi(a) = 0 \implies \text{$a$ est un point fixe de $\Phi$ asymptotiquement stable}
+        \]
+
+        Avec $x_k = a + e_k$ on obtient $e_{k+1} = \Phi(a+e_k) - \Phi(a) = \gO(\norm{e_k}^2)$
+
+    \end{preuve}
+
+    \begin{remark}
+        \begin{enumerate}[-]
+            \item Lorsque la forme analytique de $Df(x)$ est inconnue, on approche
+                $\displaystyle\frac{\partial f_i}{\partial x_j}$ par $\displaystyle\frac{f_i(x_1,\dots,x_{j-1},x_{j+\delta},x_{j+1},\dots,x_n) - f_i(x_1, \dots, x_n)}{\delta}$ avec $\delta \approx 0$.
+
+            \item Comme précédemment, le théorème 2 donne la convergence \underline{locale}
+                de la méthode de Newton, i.e. pour une condition suffisamment proche d'un
+                point fixe $a$.
+
+            \item Avantage de Newton : convergence très rapide (quadratique).
+
+            \item Inconvénient de Newton : coût très élevé à chaque étape, car il faut
+                calculer à chaque fois $A_k = Df(x_k)$ et résoudre un système linéaire
+                $A_k(x_{k+1} - x_k) = -f(x_k)$ (coût en $\gO(n^3)$, cf méthode de Gauss).
+        \end{enumerate}
+
+        $\implies$ plusieurs modifications de la méthode ont été proposées. Nous verrons
+        par exemple en TD la méthode de \underline{Broyden} très employée.
+        
+        Voici une autre modification (plus simple mais efficace) de Newton :
+        \begin{equation*}
+            \left\lbrace
+            \begin{split}
+                x_{k+1}  = \Phi(x_k) & \hspace{1cm} & \Phi(x_k) = x_k - A^{-1}f(x_k) \\
+                x_0  \in \R^n & & A = Df(x_0)
+            \end{split}
+            \right.
+        \end{equation*}
+
+        On calcule une seule fois la factorisation LU de la matrice $A$, et on l'utilise
+        à chaque étape pour résoudre $A(x_{k+1} - x_k) = -f(x_k)$ (coût $\gO(n^2)$ pour $k\geq 2$).
+
+        L'inconvénient est bien sûr qu'on \underline{perd la convergence quadratique} pour
+        une convergence uniquement \underline{linéaire}. En effet, si $f(a) = 0$,
+        $D\Phi(a) = I - A^{-1}Df(a) \approx 0$ si $x_0 \approx a$, mais
+        $\rho \Big( D\Phi(a) \Big) \ne 0$ en général.
+
+        Ce schéma se généralise en remplaçant $A$ par $Df(x_k)$ toutes les ``quelques
+        itérations''.
+    \end{remark}
+
 \end{document}
 
 
