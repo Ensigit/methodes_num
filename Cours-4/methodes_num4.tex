@@ -19,7 +19,7 @@
 \usepackage{graphicx}
 
 % Pour les listes à puces
-\usepackage{enumitem}
+\usepackage{enumerate}
 
 \usepackage{indentfirst}
 
@@ -258,7 +258,7 @@ Puisque $A = T \tpo{T}$ avec $T$ triangulaire inférieure :
     a_{ij} = \sum_{1 \leq k \leq \Min(i,j)} t_{ik} t_{jk}
 \]
 
-\begin{itemize}[label=$-$]
+\begin{enumerate}[$-$]
     \item Calculons la 1\up{ère} colonne de $T$ à partir de celle de $A$ :
         \[
             a_{11} = t_{11}^2 \implies t_{11} = \sqrt{a_{11}} \hspace{1cm} 
@@ -285,7 +285,7 @@ Puisque $A = T \tpo{T}$ avec $T$ triangulaire inférieure :
             \end{split}
         \end{equation*}
 
-\end{itemize}
+\end{enumerate}
 
 \subsection*{Coût du calcul de T :}
 On assimile l'extraction de racine carrée à une opération arithmétique élémentaire (ce qui est
@@ -296,16 +296,16 @@ Calcul de la 1\up{ère} colonne de $T$ : $n$ opérations.
 
 Calcul de la $(p+1)$\up{ème} de $T$ :
 
-\begin{itemize}[label=$-$]
+\begin{enumerate}[$-$]
     \item Calcul de $t_{p+1,p+1}$ :
         \[
             \left.
             \parbox{4cm}{
-                \begin{itemize}[label=$*$]
+                \begin{enumerate}[$*$]
                     \item $p$ multiplications
                     \item $p$ soustractions
                     \item $1$ racine
-                \end{itemize}
+                \end{enumerate}
             }\right\rbrace \text{$2p+1$ opérations}
         \]
 
@@ -313,14 +313,14 @@ Calcul de la $(p+1)$\up{ème} de $T$ :
         \[
             \left.
             \parbox{4cm}{
-                \begin{itemize}[label=$*$]
+                \begin{enumerate}[$*$]
                     \item $p$ multiplications
                     \item $p$ soustractions
                     \item $1$ divison
-                \end{itemize}
+                \end{enumerate}
             }\right\rbrace \text{$2p+1$ opérations}
         \]
-\end{itemize}
+\end{enumerate}
 
 $\to (n-p) \times (2p+1)$ opérations pour le calcul de la colonne $p+1$.
 
