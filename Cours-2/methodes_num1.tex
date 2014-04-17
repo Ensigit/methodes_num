@@ -116,7 +116,7 @@ On sait aujourd'hui résoudre numériquement des systèmes linéaires de l'ordre
 Les \textbf{systèmes pleins} font appel à des \textbf{méthodes directes}, qui donnent la solution exacte (aux erreurs d'arrondi près) en un nombre fini d'itérations, et seront décrites dans un chapitre ultérieur.
 
 Pour les \textbf{très grands systèmes creux\footnote{Exemple : discrétisation par différences finies de problèmes aux limites pour des équations aux dérivées partielles ... + schéma}}
-on utilise des \textbf{méthodes itératives}, où m construit une suite de vecteurs qui convergent vers la solution.
+on utilise des \textbf{méthodes itératives}, où on construit une suite de vecteurs qui convergent vers la solution.
 
 L'intérêt est que \textbf{ces méthodes ne manipulent pas la matrice}, mais seulement une fonction qui définit une suite par récurrence.
 
@@ -141,7 +141,6 @@ L'intérêt est que \textbf{ces méthodes ne manipulent pas la matrice}, mais se
             \\ & \leq \|A^{-1}\| \|A\| \varepsilon, 
             \; \mbox{peut-être grand !}\end{align*}
 
-    \item Pas lisible \dots
 \end{itemize}
 
 
@@ -163,7 +162,7 @@ On considère une décomposition de A (``splitting'') $A=M-N$ avec $M$ inversibl
 \begin{equation}
 \left\lbrace
 \begin{array}{ccc}
-    Mx_{kH} & = & Nx_k + b\\
+    Mx_{k+1} & = & Nx_k + b\\
     \\
     x_0 \in \R^n
     \label{eq:2}
@@ -195,6 +194,8 @@ Le choix du splitting est très important pour la performance de la méthode :
 
 La preuve complète de ce résultat sera étudiée en TD. Ici nous allons simplement montrer que $\rho(M^{-1}N)<1 \Rightarrow $ convergence de \reff{eq:2}, en admettant pour cela deux résultats.
 
+\newpage
+
 \begin{ftheo}[de l'application contractante (dans $\R^n$) ]
     Soit $E$ un sous-ensemble de $\R^n$ fermé (et non vide). On considère une norme $\| \, \|$ sur $\R^n$.
 
@@ -205,7 +206,7 @@ La preuve complète de ce résultat sera étudiée en TD. Ici nous allons simple
 
     Alors il existe un unique $x^* \in E$ tel que $F(x^*)=x^*$ (càd $F$ admet un unique point fixe dans E). De plus, pour tout $x_0 \in E$, la suite définie par :
 \[
-    x_{kH} = F(x_k)
+    x_{k+1} = F(x_k)
 \]
 converge vers $x^*$, avec
 \begin{equation}
@@ -218,7 +219,7 @@ Le système \reff{eq:2} s'écrit :
 \begin{equation}
 \left\lbrace
 \begin{array}{c}
-    \boxed{x_{kH} = M^{-1}N x_k + M^{-1} b}\\
+    \boxed{x_{k+1} = M^{-1}N x_k + M^{-1} b}\\
     \\
     x_0 \in \R^n
     \label{eq:5}
@@ -248,7 +249,7 @@ Si $\rho (M^{-1}N) < 1$, il existe donc une norme matricielle induite telle que 
 
 Donc $F : \R^n \rightarrow \R^n$ est une contraction.
 
-Donc $\forall x_0 \in R^n$, la suite définie par \reff{eq:4} converge vers une limite $x \in \R^n$ unique, solution de $x = M^{-1}Nx+M^{-1}b$, c'est-à-dire $Ax=b$.
+Donc $\forall x_0 \in R^n$, la suite définie par \reff{eq:5} converge vers une limite $x \in \R^n$ unique, solution de $x = M^{-1}Nx+M^{-1}b$, c'est-à-dire $Ax=b$.
 
 % Je ne sais pas comment présenter ces points
 \vspace{1cm}
@@ -322,7 +323,7 @@ En notant $x_k = (x^{(k)}_1,\dots,x^{(k)}_n)$ on obtient pour $i=1..n$ :
 \[
     a_{ii}x^{(k+1)}_i = - \sum_{j<i}a_{ij}x_j^{(k+1)} - \sum_{(j>i)}a_{ij}x_j^{(k)} + b_i
 \]
-Les méthodes de Jacobi et Gauss-Seidel ne sont guère utilisées en ??? ???. On leur préfère la méthode de relaxation.
+Les méthodes de Jacobi et Gauss-Seidel ne sont guère utilisées. On leur préfère la méthode de relaxation.
 
 La méthode SOR (``successive over-relaxation'', ou ``méthode de relaxation'', environ 1950) généralise Gauss-Seidel en introduisant un paramètre de relaxation $\omega \ne 0$,
 que l'on ajuste afin d'accélérer la convergence de la méthode (avec un gain généralement très important si $\omega$ est bien choisi).
@@ -378,7 +379,7 @@ SOR converge si $\rho(\mathcal{L}_{\omega}<1$)
 
 \begin{coroll}
     Si $A$ est symétrique définie positive, alors la méthode de Gauss-Seidel converge.
-    Nous avons rencontré ce type de matrices pour la discrétisation des problèmes aux limites dns le $1^{er}$ chapitre du cours (paragraphe 2), cas où la fonction $p$ est identiquement nulle)
+    Nous avons rencontré ce type de matrices pour la discrétisation des problèmes aux limites dns le $1^{er}$ chapitre du cours (paragraphe 2), cas où la fonction $p$ est identiquement nulle.
 \end{coroll}
 
 \begin{remark}
