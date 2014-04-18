@@ -19,7 +19,8 @@
 \usepackage{graphicx}
 
 % Pour les listes à puces
-\usepackage{enumitem}
+% \usepackage{enumitem}
+\usepackage{enumerate}
 
 \usepackage{indentfirst}
 
@@ -472,7 +473,7 @@ On a plus précisément le résultat suivant :
     sont inversibles, alors on peut fixer $P = I$.
 \end{ftheo}
 
-\begin{proof}
+\begin{preuve}
     $a_{11} \ne 0$ donc la 1\up{ère} de l'élimination de Gauss ne nécessite pas de permutation.
     Supposons qu'on ait $j$ étapes sans permutation :
     \[
@@ -570,7 +571,7 @@ On a plus précisément le résultat suivant :
             \times \Delta_{j+1}$
             
             D'où : $a_{11} \times a_{22}^{(1)} \times \dots \times a^{(j)}_{(j+1),(j+1)} = \Det U^{(j+1)} = \Det \Delta_{j+1} \ne 0$ 
-\end{proof}
+\end{preuve}
 
 Donc $a^{(j)}_{j+1,j+1} \ne 0$ et on peut choisir ce coefficient comme pivot pour l'étape $j+1$.
 
@@ -603,6 +604,97 @@ Par récurrence, on peut donc choisir les coefficients $a_{11}, a_{i+1,i+1}^{(i)
 (prendre la transposée du membre de droite et appliquer le résultat donné précédemment)
 
 Dans l'élimination de Gauss, lorsqu'on effectue sur $A^{(j-1)}$ une combinaison linéaire de lignes, puis une permutation des lignes $j+1$ et $k$, on multiplie $A^{(j-1)}$ par :
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.33]{matrices1.png}
+\end{figure}
+
+Cela revient au même de faire d'abord la permutation des lignes de $A^{(j-1)}$ puis la
+combinaison linéaire où l'on permute les coefficients $l_{k,j}$ et $l_{j+1,j}$ (cf la
+propriété de $P$ donnée plus loin : on permute les colonnes $j+1$ et $k$ de $T_j$).
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{matrices2.png}
+\end{figure}
+
+Donc les coefficients $l_{ij}$ du théorème 1 (coefficients de l'élimination de Gauss faite
+sous permutation sur $PA$) s'obtiennent par permutation des coefficients $l_{ij}$ du
+paragraphe 1) correspondant à l'élimination de Gauss sur la matrice $A$.
+\end{remark}
+
+
+
+\section{Techiques de choix du pivot}
+
+Le choix d'un pivot non nul mais très petit peut conduire à des erreurs numériques importantes.
+Par exemple, le système :
+\begin{equation*}
+    \left\lbrace
+    \begin{array}{c}
+        \varepsilon \; x_1 + x_2 = 1 \\
+        x_1 + x_2 = 0 
+    \end{array} \right.
+\end{equation*}
+a pour $\varepsilon \ne 1$ une solution unique $x_1 = -x_2 = \displaystyle\frac{1}{\varepsilon - 1}$
+
+\begin{enumerate}[-]
+    \item Si on résout (\ref{eq:S}) par la méthode de Gauss en utilisant $\varepsilon$ comme
+        pivot, on obtient le système équivalent :
+            \begin{align}
+                \label{eqpivot1}
+                \varepsilon \; x_1 = \; & 1 - x_2  \\
+                x_2 (\frac{1}{\varepsilon} - 1) = \; & \frac{1}{\varepsilon} 
+                \label{eqpivot2}
+            \end{align}
+\end{enumerate}
+
+Par exemple , fixons $\varepsilon = 10^{-6}$. On simule un calcul
+en virgule flottante avec 5 chiffres significatifs. Alors
+$\frac{1}{\varepsilon} = 0,1.10^{7}$ (valeur exacte : $0,999999.10^6$)
+d'où $x_2 = 1$ (valeur exacte : $x_2 = 10 \times \frac{100000}{999999} = 1,000001000001\dots$).
+
+Mais alors $x_1 = 0$, ce qui est complètement faux (valeur exacte :
+$x_1 = -x_2$).
+
+Dans le membre de droite de (\ref{eqpivot1}), on effectue une 
+soustraction qui est très mal conditionnée car $x_2 \approx 1$. Dans le calcul à
+virgule flottante, on a $1 - x_2 = 0$, alors que la valeur exacte est 
+$1 - x_2 \approx - 10^6$; on commet donc une erreur relative de $100 \%$,
+alors que $x_2$ est connu avec une erreur relative de $10^{-6}$.
+
+Si on choisit 1 comme pivot, on obtient :
+
+\begin{equation*}
+     \left \lbrace
+     \begin{array}{ccc}
+         x_1 + x_2  = & 0 \\[7pt]
+         (1 - \varepsilon) x_2  = & 1
+     \end{array}
+     \right.
+\end{equation*}
+
+Alors $-\varepsilon + 1 = +0,1.10^1$ en virgule flottante (valeur exacte
+$+0,999999$ d'où $x_2 = +1$ (précision $\sim 10^{-6}$) et $x_1 = -1$ (précision
+$\sim 10^{-6}$).
+
+Cela motive la :
+
+\subsection*{Méthode de Gauss avec pivot partiel}
+Même lorsque $a_{11} \ne 0$, on permute la 1\up{ère} ligne de (\ref{eq:S}) avec la
+ligne où $|a_{i1}|$ est le plus grand. La même stratégie est répétée pour tous les
+sous-systèmes apparaissant dans l'élimination de Gauss.
+
+\begin{remark}
+    Il existe aussi une méthode de Gauss avec pivot total, où on choisit comme
+    pivot $a_{i_0,j_0}$ avec $|a_{i_0,j_0}| = \Max |a_{ij}|$.
+
+    On permute alors la 1\up{ère} ligne de (\ref{eq:S}) avec la ligne $i_0$, et on
+    permute les inconnues $x_1$ et $x_{j_0}$. On répète ce procédé pour tous
+    les sous-systèmes qui apparaissent ensuite dans l'élimination de Gauss.
+
+    La méthode avec pivot partiel est la plus employée. Elle marche bien en pratique.
+    La méthode avec pivot total est plus coûteuse en temps de calcul; elle est donc
+    assez peu employée.
 \end{remark}
 
 
@@ -663,9 +755,9 @@ Il faut renouveler cette procédure pour les sous-systèmes de taille $n-1,n-2,\
 \begin{equation*}
     \text{$O(n^2)$}
     \begin{lcases}
-        \text{n divisions}
         1 + 2 + 3 + \dots + n - 1 & = & \sum_{i=1}^{n-1}i = \frac{1}{2}(n-1)(n-2)\\
-        1 + 2 + 3 + \dots + n - 1 & = & \sum_{i=1}^{n-1}i = \frac{1}{2}(n-1)(n-2)
+        1 + 2 + 3 + \dots + n - 1 & = & \sum_{i=1}^{n-1}i = \frac{1}{2}(n-1)(n-2)\\
+        \text{n divisions}
     \end{lcases}
 \end{equation*}
 
