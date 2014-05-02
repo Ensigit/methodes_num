@@ -194,7 +194,7 @@ un minimum de $f = - \tilde{f}$.
     \item Exemple de minimisation d'une fonction non quadratique :
         \[
             \begin{array}{cc}
-                f(x) = \frac{1}{2} \sum_{1\leq i,j\leq N, i\ne j} V(\norm{x_i - x_j}) 
+                f(x) = \dfrac{1}{2} \underset{1\leq i,j\leq N, i\ne j}{\sum} V(\norm{x_i - x_j}) 
                 & 
                 \parbox{5cm}{Cristal constitué de $N$ atomes, de positions $x_i \in \R^3$,\\ interagissent par paires via un potentiel $V$}
             \end{array}
@@ -883,7 +883,7 @@ Avec (\ref{l1:eq5}), (\ref{l1:eq7}) et (\ref{l1:eq8}) on obtient donc :
     \frac{\tpo r_k (r_k - r_{k-1}}{\norm{r_{k-1}^2}}  - \frac{<r_k,\omega_{k-1}>}{|\omega_{k-1}|^2} = \theta_k
 \]
 
-On obtient donc la formule (\ref{eqlemme}) plus simple pour le calcul de $\theta_k$.
+On obtient donc la formule (\ref{eq:eqlemme}) plus simple pour le calcul de $\theta_k$.
 
 \subsection{Convergence de la méthode du gradient conjugué et preuve du \ref{lemme2}}
 
@@ -904,6 +904,7 @@ $\rho_k \ne 0$ pour $k=0,\dots,n-1$.
             \right.
         \end{array}
     \]
+    \label{lemme3}
 \end{lemme}
 
 \begin{preuve}
@@ -925,8 +926,61 @@ $\rho_k \ne 0$ pour $k=0,\dots,n-1$.
                 < \omega_1 , \omega_0 > = 0 \hspace{1cm} \text{d'après le lemme 1}
             \]
 
-        \item Supposons $P_k$ vraie et montrons $P_{k+1}$
+        \item Supposons $P_k$ vraie et montrons $P_{k+1} (k \leq n-1)$. On a :
+
+            \[
+                r_{k+1}.\omega_k = 0 \hspace{1cm} \text{(condition d'optimalité de $\rho_k$)}
+            \]
+
+            \begin{align*}
+                r_{k+1}.\omega_q & = (Ax_{k+1} - b, \omega_q) = \left(A(x_{k+1} - x_k) + Ax_k - b, \omega_q \right) \\
+                & = - \rho_k <\omega_k,\omega_q> + r_k . \omega_q \\
+                & = 0 \hspace{0.5cm} \text{pour $q=0,..,k-1$ (hyp de récurrence $P_k$)}
+            \end{align*}
+
+            Donc $r_{k+1}.\omega_q = 0$ pour $q=0,..,k$.
+
+            Par ailleurs, $r_{k+1}.r_q = r_{k+1}.(\omega_q - \theta_q \omega_{q-1})$ \hspace{0.3cm} (avec $\theta_0 := 0$ car $r_0 = \omega_0$)
+
+            \vspace{0.4cm}
+            Donc $r_{k+1}.r_q = 0$ pour $q=0,..,k$
+
+            \vspace{0.4cm}
+            Ensuite $<\omega_{k+1},\omega_k> = 0$ d'après le lemme \ref{lemme1}, et pour
+            $q=0,\dots,k-1$ :
+            \[
+                <\omega_{k+1},\omega_q> = <r_{k+1},\omega_q> + \theta_{k+1} <\omega_k,\omega_q> = <r_{k+1},\omega_q>
+            \]
+            (par l'hypothèse de récurrence $P_k$)
+
+            \vspace{0.4cm}
+            $\rho_{q+1} - r_q = A(x_{q+1}-x_q) = - \rho_q \; A \; \omega_q$ amène alors :
+            \begin{align*}
+                <\omega_{k+1},\omega_q> & = <r_{k+1}, \omega_q> = \frac{1}{\rho_q}(r_{k+1},-r_{q+1}+r_q) \\
+                & = 0
+            \end{align*}
+            car $0 \leq q \leq k-1$ et $(r_{k+1},r_p) = 0$ pour $p = 0,\dots,k$
+
+            Cela prouve $P_k$ par récurrence.
     \end{enumerate}
 \end{preuve}
+
+En conclusion, la famille $(\omega_0, \dots, \omega_{n-1})$ est libre car les $\omega_i$ sont
+deux à deux orthogonaux pour le produit scalaire $<x,y> = \tpo x \; A \; y$. C'est donc une
+base de $\R^n$. Puisque $r_n$ est orthogonal à $\omega_0, \dots, \omega_{n-1}$, on a donc
+$r_n=0$. Nous avons donc montré que $A \, x_n = b$, i.e. $x_n=??$
+
+\begin{ftheo}
+    Soit $A \in M_n(\R)$ symétrique définie positive, $b \in \R^n$ et $f(x) = \frac{1}{2} \tpo x \: A \: x - \tpo b \: x$.
+    Alors l'algorithme du gradient conjugué définit une suite $(x_k)_{k=0,\dots,p}$ avec
+    $p \leq n$ et $A \: x_p = b$. On a $f(x_p) = \MinI{x \in \R^n} f(x)$.
+\end{ftheo}
+
+\begin{remark}
+    Le cas $p<n$ est exceptionnel.
+\end{remark}
+
+Enfin, nous avons montré dans le lemme \ref{lemme3} que $r_k.r_{k-1}=0$, ce qui prouve le lemme
+\ref{lemme2}.
 
 \end{document}
