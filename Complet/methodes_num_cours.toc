@@ -1,0 +1,30 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}M\IeC {\'e}thodes it\IeC {\'e}ratives pour des syst\IeC {\`e}mes lin\IeC {\'e}aires}{3}
+\contentsline {section}{\numberline {1.1}Description g\IeC {\'e}n\IeC {\'e}rale :}{4}
+\contentsline {section}{\numberline {1.2}M\IeC {\'e}thode de Jacobi}{6}
+\contentsline {section}{\numberline {1.3}M\IeC {\'e}thodes de Gauss-Seidel et SOR}{6}
+\contentsline {chapter}{\numberline {2}M\IeC {\'e}thode de Gauss pour les syst\IeC {\`e}mes lin\IeC {\'e}aires et factorisation LU}{9}
+\contentsline {section}{\numberline {2.1}Rappel de l'\IeC {\'e}limination de Gauss :}{9}
+\contentsline {section}{\numberline {2.2}Factorisation LU}{10}
+\contentsline {section}{\numberline {2.3}Techiques de choix du pivot}{14}
+\contentsline {section}{\numberline {2.4}Le co\IeC {\^u}t de la m\IeC {\'e}thode de Gauss}{15}
+\contentsline {chapter}{\numberline {3}R\IeC {\'e}solution num\IeC {\'e}rique d'\IeC {\'e}quations non lin\IeC {\'e}aires}{17}
+\contentsline {section}{\numberline {3.1}M\IeC {\'e}thode des approximations successives}{17}
+\contentsline {section}{\numberline {3.2}M\IeC {\'e}thode de Newton}{20}
+\contentsline {chapter}{\numberline {4}\IeC {\'E}quations diff\IeC {\'e}rentielles \IeC {\`a} condition initiale}{23}
+\contentsline {section}{\numberline {4.1}Probl\IeC {\`e}me de Cauchy}{23}
+\contentsline {section}{\numberline {4.2}M\IeC {\'e}thodes \IeC {\`a} pas s\IeC {\'e}par\IeC {\'e}}{26}
+\contentsline {subsection}{\numberline {4.2.1}D\IeC {\'e}finition}{26}
+\contentsline {subsection}{\numberline {4.2.2}Consistance, stabilit\IeC {\'e} et convergence}{27}
+\contentsline {subsection}{\numberline {4.2.3}Caract\IeC {\'e}risation de la consistance et de la stabilit\IeC {\'e}}{29}
+\contentsline {subsection}{\numberline {4.2.4}Ordre d'un sch\IeC {\'e}ma \IeC {\`a} un pas}{32}
+\contentsline {subsection}{\numberline {4.2.5}Exemples de MPS}{32}
+\contentsline {chapter}{\numberline {5}Optimisation sans contrainte}{34}
+\contentsline {section}{\numberline {5.1}Quelques r\IeC {\'e}sultats de base en calcul diff\IeC {\'e}rentiel et optimisation}{34}
+\contentsline {subsection}{\numberline {5.1.1}\IeC {\'E}tude locale des fonctions \IeC {\`a} $n$ variables}{34}
+\contentsline {subsection}{\numberline {5.1.2}Conditions suffisantes pour l'existence et l'unicit\IeC {\'e} d'un minimum}{38}
+\contentsline {section}{\numberline {5.2}Quelques m\IeC {\'e}thodes num\IeC {\'e}riques pour l'optimisation sous contraintes :}{41}
+\contentsline {section}{\numberline {5.3}M\IeC {\'e}thode du gradient conjug\IeC {\'e} pour une fonction quadratique}{43}
+\contentsline {subsection}{\numberline {5.3.1}Description de la m\IeC {\'e}thode :}{43}
+\contentsline {subsection}{\numberline {5.3.2}Preuve du lemme \ref {lemme1}}{45}
+\contentsline {subsection}{\numberline {5.3.3}Convergence de la m\IeC {\'e}thode du gradient conjugu\IeC {\'e} et preuve du \ref {lemme2}}{46}
