@@ -181,10 +181,6 @@ un minimum de $f = - \tilde{f}$.
 \subsubsection*{Exemples :}
 
 \begin{enumerate}[label=-]
-    \item Méthode des moindres carrés : 
-        + IMAGE
-        et terminer
-
     \item Résolution d'un système linéaire $Ax=b$, avec $A$ symétrique définie
         positive. Exemple d'application : résolution de l'équation de Poisson
         par différences finies. Nous verrons que la solution du système
@@ -418,7 +414,11 @@ suffisante d'unicité.
 \end{remark}
 
 \subsubsection*{Interprétation en dimension 1 :}
-+ IMAGE
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.7]{7optim-dim1-convexe.png}
+    \label{fig:7optim-dim1-convexe}
+\end{figure}
 
 
 \begin{fdef}
@@ -447,7 +447,11 @@ que $x \ne y, \forall t \in ]0,1[,$
     Ce théorème ne donne pas l'existence d'un minimum.
 
     Exemple :
-    + IMAGE
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.7]{7optim-min-str-cvx.png}
+    \label{fig:7optim-min-str-cvx}
+\end{figure}
 \end{remark}
 
 \begin{ftheo}
@@ -479,8 +483,16 @@ $\mathcal{C}^1$.
     \end{enumerate}
 \end{lemme}
 
+% Pas réussi à afficher l'image où il faut sans les vspaces ???
+\vspace{0.1cm}
 \subsubsection*{Interprétation en dimension 1 :}
-+ IMAGE
+\vspace{0.7cm}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.7]{7optim-cvx-tang.png}
+    \label{fig:7optim-cvx-tang}
+\end{figure}
 
 \begin{ftheo}
     Soit $\deffonc{f}{\R^n}{\R}$ de classe $\mathcal{C}^1$ et convexe. Alors :
@@ -492,7 +504,7 @@ $\mathcal{C}^1$.
 \begin{preuve}
     \begin{enumerate}[label=•]
         \item ``$\implies$'' voir \S \textbf{1.1}
-        \item ``$\Longleftarrow'' f(y) \geq f(x) + Df(x)\underbrace{(y-x)}_{= 0}, \forall y \in \R^n$
+        \item ``$\Longleftarrow'' f(y) \geq f(x) + Df(x)\underbrace{(y-x)}_{= 0} \hspace{0.4cm} \forall y \in \R^n$
     \end{enumerate}
 \end{preuve}
 
@@ -971,7 +983,7 @@ base de $\R^n$. Puisque $r_n$ est orthogonal à $\omega_0, \dots, \omega_{n-1}$,
 $r_n=0$. Nous avons donc montré que $A \, x_n = b$, i.e. $x_n=??$
 
 \begin{ftheo}
-    Soit $A \in M_n(\R)$ symétrique définie positive, $b \in \R^n$ et $f(x) = \frac{1}{2} \tpo x \: A \: x - \tpo b \: x$.
+    Soit $A \in M_n(\R)$ symétrique définie positive, $b \in \R^n$ et ${f(x) = \frac{1}{2} \tpo x \: A \: x - \tpo b \: x}$.
     Alors l'algorithme du gradient conjugué définit une suite $(x_k)_{k=0,\dots,p}$ avec
     $p \leq n$ et $A \: x_p = b$. On a $f(x_p) = \MinI{x \in \R^n} f(x)$.
 \end{ftheo}
