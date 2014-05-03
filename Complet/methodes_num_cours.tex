@@ -12,6 +12,8 @@
 % \usepackage{xspace}
 \usepackage[francais]{babel}
 
+\usepackage{cases}
+
 % Pour les matrices annotées ... 
 \usepackage{blkarray}
 
@@ -99,6 +101,7 @@
 \newcommand{\deffonc}[3]{#1 : #2 \longrightarrow #3}
 \newcommand{\Co}{\mathcal{C}}
 \newcommand{\MinI}[1]{\underset{#1}{\text{Min }}}
+\newcommand{\MaxI}[1]{\underset{#1}{\text{Max }}}
 
 \DeclareMathOperator{\Sup}{Sup}
 \DeclareMathOperator{\Max}{Max}
@@ -161,12 +164,44 @@
 \newtheorem{exemple}{Exemple}
 \newframedtheorem{lemme}{Lemme}
 
-%\includeonly{methodes_num6}
+%\includeonly{methodes_num0}
+\newlength{\larg}
+\setlength{\larg}{14.5cm}
+
+% Crédit page de garde : http://www.grappa.univ-lille3.fr/FAQ-LaTeX/6.67.html
+\title{
+{\rule{\larg}{1mm}}\vspace{7mm}
+\begin{tabular}{p{2cm} r}
+   & {\Huge {\bf Méthodes numériques de base}} \\
+   & \\
+   & {\huge Cours de première année - ENSIMAG}
+\end{tabular}\\
+\vspace{2mm}
+{\rule{\larg}{1mm}}
+\vspace{2mm} \\
+\begin{tabular}{p{11cm} r}
+   & {\large \bf } \\
+   & {\large }
+\end{tabular}\\
+\vspace{5.5cm}
+}
+\author{\begin{tabular}{p{13.7cm}}
+    \begin{tabular}{ll}
+        Cours : & Hahmann S.\\
+         & James G.\\
+    \LaTeX : & Poupin P.
+    \end{tabular}
+\end{tabular}\\
+\hline }
+\date{}
 
 \begin{document}
 
+\maketitle
+
 \tableofcontents
 
+\include{methodes_num0}
 \include{methodes_num1}
 \include{methodes_num3}
 % \include{methodes_num4}
