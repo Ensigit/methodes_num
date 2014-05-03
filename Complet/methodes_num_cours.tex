@@ -1,18 +1,18 @@
 
 \documentclass[a4paper,11pt]{report}
 
-% des paquetages utiles classiques, en ajouter d'autres selon vos besoins
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amssymb,calc}
-% \usepackage{fullpage}
-% \usepackage{stmaryrd}
-% \usepackage{url}
-% \usepackage{xspace}
 \usepackage[francais]{babel}
 
 \usepackage{cases}
+
+\usepackage{wrapfig}
+
+% Pour se passer du préfixe FIGURE
+\usepackage[labelformat=empty]{caption}
 
 % Pour les matrices annotées ... 
 \usepackage{blkarray}
@@ -23,11 +23,9 @@
 % Pour les listes à puces
 \usepackage{enumitem}
 
-% \usepackage{enumerate}
-
 \usepackage{indentfirst}
 
-% Pour splitter la page
+% Pour splitter une page
 \usepackage{multicol}
 
 
@@ -69,9 +67,6 @@
   {\end{aligned}\right.}
 
 
-\newcommand{\reff}[1]{(\ref{#1})}
-
-
 \setlength{\parindent}{30pt}
 \setlength{\parskip}{1ex}
 \setlength{\textwidth}{15cm}
@@ -80,7 +75,8 @@
 \setlength{\evensidemargin}{-.7cm}
 \setlength{\topmargin}{-.5in}
 
-% des commandes pratiques pour ecrire des maths :
+% Commandes pour les maths :
+\newcommand{\reff}[1]{(\ref{#1})}
 \newcommand{\dx}{\,dx}
 \newcommand{\dt}{\,dt}
 \newcommand{\ito}{,\dotsc,}
@@ -110,19 +106,7 @@
 \DeclareMathOperator{\Min}{Min}
 \DeclareMathOperator{\Inf}{Inf}
 
-%
-%\lstset{
-%  literate=%
-%  {À}{{\`A}}1 {Â}{{\^A}}1 {Ç}{{\c{C}}}1%
-%  {à}{{\`a}}1 {â}{{\^a}}1 {ç}{{\c{c}}}1%
-%  {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {Ë}{{\"E}}1% 
-%  {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1%
-%  {Ï}{{\"I}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1%
-%  {ï}{{\"i}}1 {î}{{\^i}}1 {ô}{{\^o}}1%
-%  {Ù}{{\`U}}1 {Û}{{\^U}}1 {Ü}{{\"U}}1%
-%  {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1%
-%}
-
+% Je ne sais plus pourquoi ??
 \newlength\dlf
 \newcommand\alignedbox[2]{
   % #1 = before alignment
@@ -164,11 +148,13 @@
 \newtheorem{exemple}{Exemple}
 \newframedtheorem{lemme}{Lemme}
 
-%\includeonly{methodes_num0}
+
+
+%%%%%%%%%%%%%%%% PAGE DE GARDE %%%%%%%%%%%%%%%%%%%%%%
+% Crédit : http://www.grappa.univ-lille3.fr/FAQ-LaTeX/6.67.html
 \newlength{\larg}
 \setlength{\larg}{14.5cm}
 
-% Crédit page de garde : http://www.grappa.univ-lille3.fr/FAQ-LaTeX/6.67.html
 \title{
 {\rule{\larg}{1mm}}\vspace{7mm}
 \begin{tabular}{p{2cm} r}
@@ -194,6 +180,10 @@
 \end{tabular}\\
 \hline }
 \date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \includeonly{methodes_num6}
 
 \begin{document}
 
