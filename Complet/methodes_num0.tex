@@ -1,0 +1,237 @@
+\chapter{Approximation de problèmes aux limites par différences finies}
+
+\section{Introduction}
+
+On considère ici des problèmes aux limites en une dimension,
+linéaires, du second ordre :
+
+\begin{subnumcases}{}
+- u''(x) + p(x) u'(x) + q(x) u(x) = f(x) \hspace{1cm} x \in ]a,b[ \label{eq:1-pbvp-1}\\
+    \left.\begin{array}{c}
+        u(a) = \alpha \\
+        u(b) = \beta
+    \end{array} \right\rbrace \label{eq:1-pbvp-cl}
+\end{subnumcases}
+où $p,q,f \in \Co^0([a,b])$ et $\alpha,\beta \in R$. On a une équation
+différentielle linéaire du 2\up{nd} ordre, à coefficients a priori variables,
+augmentée des conditions aux limites \eqref{eq:1-pbvp-cl}.
+Ces conditions fixent la valeur de $u$ au bord du domaine : on parle de
+\textbf{conditions de Dirichlet}.
+
+Lorsque les conditions aux limites fixent la valeur de $u'$ au bord 
+($u'(a)=\alpha,u'(b)=\beta$), on parle de conditions de \textbf{Neumann}.
+
+\subsection*{Exemples issus de la physique}
+\begin{enumerate}[label=\alph*)]
+    \item 
+        \[
+            \left\lbrace
+            \begin{array}{lll}
+                \dfrac{d^2\phi}{dr^2} + \dfrac{1}{r} \dfrac{d\phi}{dr} = \lambda \phi & , & r \in ]r_a,R[
+                    \\ [5pt]
+            \phi'(r_a) = \alpha
+            \\ [2pt]
+            \phi'(R) = 0
+            \end{array}
+            \right.
+        \]
+
+        Equations de Debye-Hückel donnant le potentiel électrique $\phi$ autour
+        d'un cylindre chargé (de rayon $r_a$) polongé dans une solution
+        ionique ($r_a < r < R$).
+
+    \item 
+        \[
+            \left\lbrace
+            \begin{array}{lll}
+            - \dfrac{d}{dx}\left( k(x) \dfrac{du}{dx} \right) = f(x) & , & x \in ]0,L[
+            \\ [5pt]
+            u(0) = 0
+            \\ [2pt]
+            u(L) = 0 
+            \end{array}
+            \right.
+        \]
+
+        Equation de la chaleur stationnaire donnant la température $u$ dans
+        une barre de longueur $L$ chauffée et de conductivité $k(x)$ variable.
+        ($f(x) = $ quantité de chaleur fournie par unité de temps et de longueur).
+        La température aux extrémités de la barre est maintenue à 0.
+\end{enumerate}
+
+Lorsque $q \geq 0$, le résultat suivant assure que \eqref{eq:1-pbvp-1} - \eqref{eq:1-pbvp-cl}
+possède une solution unique. Mais on n'a pas en général d'expression explicite
+de $u$ quand $p$ ou $q$ dépendent de $x$.
+
+\begin{ftheo}
+    Si $q(x) \geq 0$ sur $[a,b]$ alors \eqref{eq:1-pbvp-1} - \eqref{eq:1-pbvp-cl}
+    \textbf{admet une unique solution} $u \in \Co^2([a,b])$.
+    
+    De plus, si $p,q,f \in \Co^k([a,b])$
+    alors $\boxed{u \in \Co^{k+2}([a,b])}$.
+\end{ftheo}
+
+\begin{preuve}[de l'unicité]
+    Si $u_1$ et $u_2$ vérifient \eqref{eq:1-pbvp-1} - \eqref{eq:1-pbvp-cl}, alors
+    $v = u_1 - u_2$ est solution du problème homogène :
+    \[
+        \left\lbrace
+        \begin{array}{l}
+            -v'' + pv' + qv = 0 \\
+            v(a) = v(b) = 0
+        \end{array}
+        \right.
+    \]
+
+    Notons $r(x) = e^{-\int p \dx}$ et $s(x) = q(x) e^{-\int p \dx}$.
+    En multipliant l'équation par $r$ on a :
+    \[
+       -\left( r(x) v'(x) \right)' + s(x) v(x) = 0
+    \]
+
+    On multiplie maintenant cette équation par $v$ et on intègre sur $[a,b]$,
+    en utilisant les conditions aux limites :
+
+    \[
+        \int_a^b r (x) v'^2 \dx + \int_a^b s(x) v^2 \dx = 0
+    \]
+    avec $r>0$ et $s \geq 0$
+
+    Donc $\int_a^b r(x) v'^2 \dx = 0 \implies v'=0$ (puisque $r>0$) $\implies v = 0$ à cause des conditions aux limites.
+\end{preuve}
+
+L'existence d'une solution $u \in \Co^2([0,1])$ peut être obtenue de différentes façons
+(méthode de variation de la constante, méthodes d'analyse fonctionnelle,
+par exemple formulation variationnelle).
+La régularité $\Co^k$ de $u$ s'obtient simplement par récurrence sur $k$.
+
+\section{Discrétisation par différences finies}
+
+Nous allons étudier comment calculer $u$ numériquement.
+
+\[
+    (p) \;
+    \left\lbrace
+    \begin{array}{cc|c}
+        -u'' + p(x) u' + q(x) u = f(x) &  & x \in ]a,b[ \\
+            u(a) = \alpha &  & p,q,f \in \Co^0([a,b]) \\
+            u(b) = \beta &  & q \geq 0 \text{ sur } [a,b]
+    \end{array}
+    \right.
+\]
+
+On discrétise $[a,b]$ suivant les points $x_i = a + ih$ ($i=0,\dots,N+1$)
+avec $h = \frac{b-a}{N+1}$. On notera $u_i$ la valeur approchée de
+$u(x_i)$ à calculer et $U = \tpo (u_1, \dots, u_N)$, $(u_0 = \alpha, u_{N+1} = \beta)$.
+
+On approche $u''(x_i)$ et $u'(x_i)$ en utilisant un développement de Taylor
+de $u$ en $x_i$.
+
+Si $u \in \Co^4([a,b])$ :
+\[
+    u(x_{i+1}) = u(x_i + h) = u(x_i) + h \: u'(x_i) + \frac{h^2}{2} u''(x_i)
+    + \frac{h^3}{6} u^{(3)}(x_i) + \frac{h^4}{24} u^{(4)}(\theta_i^+)
+\]
+\hfill avec $\theta_i^+ \in ]x_i,x_{i+1}[$
+
+\[
+    u(x_{i-1}) = u(x_i + h) = u(x_i) - h \: u'(x_i) + \frac{h^2}{2} u''(x_i)
+    - \frac{h^3}{6} u^{(3)}(x_i) + \frac{h^4}{24} u^{(4)}(\theta_i^-)
+\]
+\hfill avec $\theta_i^- \in ]x_{i-1},x_i[$
+
+    Donc :
+    \[
+        \frac{u(x_{i+1}) - u(x_{i-1})}{2h} =  u'(x_i) + \mathcal{O}(h^2)
+    \]
+    \[
+        \frac{u(x_{i+1}) - u(x_i) + u(x_{i-1})}{h^2} =  u''(x_i) + \mathcal{O}(h^2)
+    \]
+
+    Notons $p_i = p(x_i)$, $q_i = q(x_i)$, $f_i = f(x_i)$. On a donc :
+    \[
+        \frac{2u(x_i) - u(x_{i+1}) - u(x_{i-1})}{h^2} + p_i \frac{u(x_{i+1}) - u(x_{i-1})}{2h} + q_i u(x_i) - f_i = e_i
+    \]
+    \hfill pour tout $i=1,\dots,N$, avec $e_i = \mathcal{O}(h^2)$
+
+    L'approximation du problème $(p)$ par différences finies consiste à
+    résoudre :
+
+    \[
+        (S) \;
+        \left\lbrace
+        \begin{array}{ccc}
+            \dfrac{2u_i - u_{i+1} - u_{i-1}}{h^2} + p_i \dfrac{u_{i+1} - u_{i-1}}{2h} + q_i u_i - f_i = 0 & & \hspace{0.5cm} i=1,\dots,N \\ [15pt]
+            u_0 = \alpha, \; u_{N+1} = \beta & &
+        \end{array}
+        \right.
+    \]
+
+    La solution de $(p)$ vérifie donc $(S)$ à une erreur $e_i$ près qui est
+    $\mathcal{O}(h^2)$ lorsque $h \longrightarrow 0$. On dit que le schéma
+    $(S)$ est \textbf{consistant}.
+
+    On appelle $e_i$ l'erreur de troncature (ou erreur de consistance) du schéma
+    $(S)$ au point $x_i$.
+
+    Celle-ci étant $\mathcal{O}(h^2)$ (pour $u$ assez régulière) on dit que le schéma
+    $(S)$ est \textbf{d'ordre 2}. Le schéma serait d'ordre $p$ avec une erreur
+    de troncature en $\mathcal{O}(h^p)$.
+
+    \begin{remark}
+        On a ici 
+        \[
+            \MaxI{i\leq i \leq N} |e_i| \leq \dfrac{h^2}{6} \left( \frac{1}{2}
+            \norm{u^{(4)}}_\infty + \norm{p}_\infty \norm{u^{(3)}}_\infty \right)
+        \]
+
+        Le problème $(S)$ consiste en un système de $N$ équations à $N$ inconnues. Il s'écrit sous forme matricielle
+        \[
+            AU = B
+        \]
+        
+        avec $A \in M_N(\R)$ et $B \in \R^N$ donnés par :
+        \[
+            \begin{array}{cc}
+                A =
+                \begin{pmatrix}
+                    2 + h^2 q_1 & -1 + \frac{h}{2}p_1 & & 0\\
+                    -1 - \frac{h}{2}p_2 & 2 + h^2 q_2 & -1 + \frac{h}{2}p_2 & \\
+                    & \ddots & \ddots & & \\
+                    & & 2 + h^2 q_{N-1} & -1 + \frac{h}{2}p_{N-1} \\
+                    0 & & -1 - \frac{h}{2}p_N & 2 + h^2 q_N
+                \end{pmatrix}
+                &
+                B =
+                \begin{pmatrix}
+                    h^2 f_1 + \alpha (1 + \frac{h}{2}p_1) \\
+                    h^2 f_2 \\
+                    \hdots \\
+                    h^2 f_{N-1} \\
+                    h^2 f_n + \beta (1 - \frac{h}{2} p_N)
+                \end{pmatrix}
+            \end{array}
+        \]
+
+        Le système $(S)$ possède une unique solution pour $h$ assez petit.
+    \end{remark}
+
+    \begin{ftheo}
+        Si $q \geq 0$ sur $[a,b]$ et $h < \dfrac{2}{\norm{p}_\infty}$ alors
+        $A$ est inversible.
+    \end{ftheo}
+
+On va montrer ce résultat dans le cas où $q > 0$ sur $]a,b[$.
+
+    \begin{fdef}
+        $A \in M_N(\C)$ est à diagonale strictement dominante si
+        \[
+            |a_{ii}| > \sum_{j \ne i} |a_{ij}| \text{ pour tout $i=1,..,N$}
+        \]
+    \end{fdef}
+
+    \begin{ftheo}
+        Une matrice à diagonale strictement dominante est inversible.
+    \end{ftheo}
+
+
