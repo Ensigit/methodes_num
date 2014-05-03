@@ -219,6 +219,7 @@ Si $u \in \Co^4([a,b])$ :
     \begin{ftheo}
         Si $q \geq 0$ sur $[a,b]$ et $h < \dfrac{2}{\norm{p}_\infty}$ alors
         $A$ est inversible.
+        \label{th:1-pbvp-Ainv}
     \end{ftheo}
 
 On va montrer ce résultat dans le cas où $q > 0$ sur $]a,b[$.
@@ -232,6 +233,348 @@ On va montrer ce résultat dans le cas où $q > 0$ sur $]a,b[$.
 
     \begin{ftheo}
         Une matrice à diagonale strictement dominante est inversible.
+        \ref{th:1-pbvp-DSD-inv}
     \end{ftheo}
 
+    On vérifie que $A$ est à diagonale strictement dominante sous les hypothèses
+    du théorème \ref{th:1-pbvp-Ainv} et pour $q_i>0$. En effet :
+    \[
+        \left\lbrace
+        \begin{array}{c}
+            a_{i,i+1} \leq -1 + \frac{h}{2} \norm{p}_\infty < 0 \\
+            a_{i,i-1} \leq -1 + \frac{h}{2} \norm{p}_\infty < 0
+        \end{array}
+        \right.
+    \]
 
+    D'où :
+    \begin{enumerate}[label=*]
+        \item $|a_{11}| - |a_{12}| = 2 + h^2 q_1 - (1 - \frac{h}{2}p_1) \geq
+            \underbrace{1 - \frac{h}{2} \norm{p}_\infty}_{>0} + \underbrace{h^2 q_1}_{>0} > 0 $
+
+        \item $|a_{N,N}| - |a_{N,N-1}| = 2 + h^2 q_N - (1 - \frac{h}{2}p_N) \geq
+            \underbrace{1 - \frac{h}{2} \norm{p}_\infty}_{>0} + \underbrace{h^2 q_N}_{>0} > 0 $
+
+        \item Pour $i = 2, \dots, N-1$ :
+            \begin{align*}
+                |a_{ii}| - |a_{i,i+1}| - |a_{i,i-1}| & = 2 + h^2 q_i - (1-\frac{h}{2}p_i) - (1 + \frac{h}{2}p_i) \\
+                & = h^2 q_i > 0
+            \end{align*}
+    \end{enumerate}
+
+    $A$ est donc à diagonale strictement dominante, et donc inversible d'après
+    le théorème \ref{th:1-pbvp-DSD-inv}. Cela prouve le théorème \ref{th:1-pbvp-Ainv} dans le cas $q > 0$.
+
+\section{Étude de la convergence dans un cas simplifié}
+Nous allons montrer que $u_i \underset{h\to0}{\longrightarrow} u(x_i)$
+
+\[
+    (P) \;
+    \left\lbrace
+    \begin{array}{ccc}
+        -u''(x) + c(x) u(x) = f(x) & & \text{sur } ]0,1[ \\
+            u(0) = u(1) = 0 & & c(x) \geq 0 \text{ est $\Co^2$ sur $[0,1]$}
+    \end{array}
+    \right.
+\]
+
+Le problème discrétisé s'écrit : ($x_i = ih, c_i = c(x_i), f_i = f(x_i)$)
+\[
+    (S) \;
+    \left\lbrace
+    \begin{array}{ccc}
+        -\frac{u_{i+1} - 2 u_i + u_{i-1}}{h^2} + c_i u_i = f_i & & i=1,..,N \\
+        u_0=u_{N+1}=0
+    \end{array}
+    \right.
+\]
+
+Soit encore pour $U=\tpo (u_1,\cdots,u_N)$, $F = \tpo (f_1, \cdots,f_N)$
+\[
+    \begin{array}{ccc}
+        \dfrac{1}{h^2}A \: U = F,
+        & \hfill &
+        A =
+        \begin{pmatrix}
+            c_1 h^2 + 2 & & -1 & & 0 \\
+            -1 & & \ddots & \ddots & \\
+            & & \ddots & \ddots & -1 \\
+            0 & & & -1 & c_N h^2 + 2
+        \end{pmatrix}
+    \end{array}
+\]
+
+On a $A = M + h^2 c$ avec 
+\[
+    M = 
+    \begin{pmatrix}
+        2 & -1 & & 0 \\
+        -1 & \ddots & & -1 \\
+        & & \ddots & & \\
+        0 & & -1 & -2
+    \end{pmatrix}
+    \text{ et } 
+    C =
+    \begin{pmatrix}
+        c_1 & & 0 \\
+        & \ddots & \\
+        0 & & c_N
+    \end{pmatrix}
+\]
+
+Nous allons établir quelques propriétés de $M$ qui seront utiles par la suite.
+
+\begin{lemme}
+    Les valeurs propres de $M$ sont $\lambda_k = 4 \sin^2 \left[ \dfrac{k\pi}{2(N+1)} \right]$, ($k=1,\cdots,N$), et les vecteurs propres associés
+    $V^k = \tpo (v_1^k, \cdots , v_N^k)$ vérifient
+    \[
+        v_i^k = \alpha \sin \left( \frac{ik\pi}{N+1} \right) \hspace{0.7cm} i=1,\cdots,N
+    \]
+
+    ($\alpha \in \R$ constante arbitraire)
+    \label{lemme:1-pbvp-lemme1}
+\end{lemme}
+
+\begin{preuve}
+    $M$ est réelle symétrique donc ses valeurs propres $\lambda$ sont réelles.
+    L'équation $MV = \lambda V$ s'écrit :
+    \[
+        \left\lbrace
+        \begin{array}{cc}
+            2 v_j - v_{j+1} - v_{j-1} = \lambda v_j & j=1,\cdots,N \\
+            v_0 = v_{n+1} = 0
+        \end{array}
+        \right.
+    \]
+
+    Pour $1 \leq j \leq N$, $v_j$ vérifie donc une relation de récurrence linéaire
+    du second ordre.
+    Les suites solutions de cette relation de récurrence forment un espace
+    vectoriel de dimension 2.
+
+    En posant $v_j = ar^j$ on botient l'équation caractéristique
+    $r^2 + (\lambda-2) r + 1 = 0$, de discriminant $\Delta = \lambda(\lambda - 4)$
+
+    \begin{enumerate}[label=•]
+        \item Plaçons-nous d'abord dans le cas $\Delta < 0$, c'est-à-dire
+        $\lambda \in ]0,4[$. $r$ est complexe et de module 1, on pose $r = e^{iq}$
+            et on obtient $4 \sin^2 \left(\frac{q}{2}\right) = \lambda$.
+            Les solutions de la relation de récurrence s'écrivent
+            $v_j = a e^{iqj} + \overline{a} e^{-iqj} \hspace{10pt} (a \in \C, q \in [0,\pi])$
+
+            Soit encore $v_j = A \sin(qj) + B \cos(qj)$.
+
+            On cherche maintenant $q,A,B$ de manière à satisfaire les conditions aux limites.
+            $v_0 = 0$ donne $B = 0$ et $v_{N+1} = 0$ donne $q = \dfrac{k\pi}{N+1}, k = 1,\cdots,N$. D'où :
+            \[
+                \lambda = 4 \sin^2 \left( \frac{k \pi}{2(N+1)} \right),
+                \hspace{0.7cm} v_j = A\sin\left( \frac{k\pi}{N+1}j \right)
+            \]
+
+        \item L'étude précédente donne $N$ valeurs propres distinctes de $M$.
+            On a donc trouvé toutes ses valeurs propres et il n'est pas
+            nécessaire de considérer le cas $\Delta \geq 0$ (on n'obtiendrait
+            alors que la solution $V = 0$).
+    \end{enumerate}
+\end{preuve}
+
+\begin{lemme}[Inégalité de Poincaré discrète]
+    \[
+        \frac{1}{h^2} \tpo X \; M \; X \geq 4 \norm{X}_2^2 \hspace{1cm} \forall X \in \R^N, h = \frac{1}{N+1}
+    \]
+    \label{lemme:1-pbvp-lemme2}
+\end{lemme}
+
+\begin{preuve}
+    On a $M = P \wedge P^{-1}$ où
+    $\wedge =
+    \begin{pmatrix}
+        \lambda_1 & & 0 \\
+        & \ddots & \\
+        0 & & \lambda_N
+    \end{pmatrix}
+    $
+    et
+    $ P =
+    \begin{pmatrix}
+        V1 & \cdots & V^N
+    \end{pmatrix}
+    $
+
+    ($V^k$ calculés dans le lemme \ref{lemme:1-pbvp-lemme1}). $M$ est symétrique
+    et les valeurs propres $\lambda_k$ sont distinctes donc les vecteurs propres
+    $V^k$ sont deux à deux orthogonaux.
+
+    En fixant $\alpha = \sqrt{\frac{2}{N+1}}$ on a $\norm{V^k}_2 = 1$ donc
+    $\tpo P P = I$.
+
+    En posant $Y = \tpo P X$ on obtient 
+    \[
+        \frac{1}{h^2} \tpo X \, M \, X =
+        \frac{1}{h^2} \tpo Y \, \wedge \, Y = \sum_{k=1}^N \lambda_k \: y_k^2
+        \; \geq \; \frac{\lambda_1}{h^2} \norm{Y}_2^2 = \frac{\lambda_1}{h^2} \norm{X}_2^2
+    \]
+
+    Donc : 
+    \[
+        \frac{1}{h^2} \: \frac{\tpo X \, M \, X}{\norm{X}_2^2} \geq \frac{\lambda_1}{h^2} = \frac{1}{h^2} 4 \sin^2 \left( \frac{\pi k }{2} \right) \geq 4
+    \]
+    \[
+        ( \sin x \geq \frac{2}{\pi} x \text{ si } 0 \leq x \leq \dfrac{\pi}{2},
+        \text{ et } \frac{\pi h}{2} \leq \frac{\pi}{4} )
+    \]
+\end{preuve}
+
+    On en déduit l'estimation suivante sur la norme euclidienne de la solution
+    du système linéaire :
+\begin{lemme}
+    La solution de $\dfrac{1}{h^2} \, A \, W = B$ vérifie :
+    \[
+        \norm{W}_2 \leq \frac{1}{4} \norm{B}_2
+    \]
+    \label{lemme:1-pbvp-lemme3}
+\end{lemme}
+
+\begin{preuve}
+    \[
+        \frac{1}{h^2} \tpo W \, A \, W = \frac{1}{h^2} \tpo W \, M \, W +
+        \underbrace{\tpo W \, C \, W}_{\geq 0} \geq 4 \norm{W}_2^2
+        % \underbrace{\tpo W \, C \, W}_{\geq 0} \geq 4 \norm{W}_2^2
+    \] d'après le lemme \ref{lemme:1-pbvp-lemme2}
+
+    Par ailleurs :
+    \[
+        \frac{1}{h^2} \tpo W \, A \, W = \tpo W \, B \leq \norm{W}_2 \norm{B}_2
+        \hspace{1cm} \text{ (inégalité de Cauchy-Schwartz) }
+    \]
+
+    Donc $4 \norm{W}_2^2 \leq \norm{W}_2 \norm{B}_2$
+\end{preuve}
+
+Ce résultat correspond à la \textbf{``stabilité $L^2$ du schéma numérique''}.
+
+En effet, définissons la norme : $\norm{F}_h = \sqrt{h} \norm{F}_2$.
+
+Si $f \in \Co^0([0,1]), $ 
+\[
+    \norm{F}_h^2 = \sum_{i=1}^N f(ih)^2 \times h \underset{h\to0}{\longrightarrow} \int_0^1 f^2 \dx \hspace{0.7cm} \text{(somme de Riemann)}
+\]
+
+C'est-à-dire $\norm{F}_h \underset{h\to 0}{\longrightarrow} \norm{f}_{L^2(0,1)}$
+
+Le lemme \ref{lemme:1-pbvp-lemme3} donne $\norm{U}_h \leq \frac{1}{4}\norm{F}_h \leq \frac{1}{2} \norm{f}_{L^2}$ pour $h$ assez petit.
+
+Soit $U_h$ la ``solution numérique'' définie sur [0,1] par interpolation
+linéaire des $u_i$ (donc $U_h(x_i) = u_i$). On vérifie que $\norm{U_h}_{L^2} = \norm{U}_h$.
+
+On a donc 
+\[
+    \norm{U_h}_{L^2} \leq \frac{1}{2} \norm{f}_{L^2} \hspace{0.7cm} \text{pour $f$ fixé et $h$ assez petit}
+\]
+
+La norme $L^2$ de la solution numérique reste bornée quand $h \longrightarrow 0$
+et on dit alors que le schéma est stable dans $L^2$.
+
+Notons maintenant $\tilde u_i = u(x_i)$ et $\tilde U = \tpo (\tilde u_1, \cdots , \tilde u_N )$
+
+À l'aide d'un développement de Taylor en $x_i$, on obtient :
+\begin{align*}
+    & \frac{\tilde u_{i+1} - 2 \tilde u_i + \tilde u_{i-1}}{h^2} + c_i \tilde u_i - f_i \\
+    = & - u''(x_i) + c(x_i) u(x_i) - f(x_i) + o(1) \hspace{1cm} \text{quand } h\to0 \\
+    = & \;o(1)
+\end{align*}
+
+Si $u \in \Co^4([0,1])$ (càd pour $f \in \Co^2([0,1])$) on a mieux :
+\[
+    - \frac{\tilde u_{i+1} - 2 \tilde u_i + \tilde u_{i-1}}{h^2} + c_i \tilde u_i - f_i = - \frac{h^2}{24} u^{(4)} (\theta_i^+) - \frac{h^2}{24} u^{(4)}(\theta_i^-)
+\] 
+    \hfill $\Big(\theta_i^+ \in ]x_i,x_{i+1}[, \text{ et } \theta_i^- \in ]x_{i-1},x_i[ \Big)$
+
+    D'où :
+    \[
+        \left| - \frac{\tilde u_{i+1} - 2 \tilde u_i + \tilde u_{i-1}}{h^2}
+        + c_i \tilde u_i - f_i \right| \leq \frac{h^2}{12} \norm{U^{(4)}}_\infty
+    \]
+    \hfill (converge en $h^2$)
+
+    Donc la solution de $(P)$ vérifie $(S)$ avec une erreur qui tend vers 0 quand
+    $h \to 0$. Le schéma $(S)$ est donc \textbf{consistant}. Lorsque $u$
+    est suffisamment régulière, cette erreur est en $\mathcal{O}(h^2)$;
+    le schéma $(S)$ est donc \textbf{d'ordre 2}.
+
+    Les calculs précédents montrent que :
+    \[
+        \frac{1}{h^2} \, A \tilde U = F + E
+    \]
+    \hfill avec $\norm{E}_\infty \leq \frac{h^2}{12} \norm{U^{(4)}}_\infty$ si
+    $u \in \Co^4([0,1])$
+
+    Puisque $\norm{.}_h \leq \norm{.}_\infty$ on a donc lorsque $h \to 0$ :
+    \[
+        \norm{E}_h = \mathcal{O}(h^2) \hspace{0.7cm} \text{ si $u$ est $\Co^4$ (càd $f$ est $\Co^2$) }
+    \]
+
+    Après avoir montré la stabilité et la consistance du schéma $(S)$, on peut
+    maintenant conclure sur sa convergence.
+
+    En effet :
+    \[
+        \frac{1}{h^2} \, A(\tilde U - U) = E
+    \]
+
+    amène grâce au lemme \ref{lemme:1-pbvp-lemme3} :
+    \[
+        \norm{\tilde U - U}_h \leq \frac{1}{4} \norm{E}_h = \mathcal O(h^2)
+        \hspace{0.5cm} \text{ si $f$ est $\Co^2$}
+    \]
+
+    \begin{remark}
+        \begin{enumerate}[label=•]
+            \item Si on a simplement $f \in \Co^0([0,1])$, on peut montrer
+                que $\norm{\tilde U - U}_h \longrightarrow 0$ lorsque $h \to 0$
+                à l'aide d'un argument de densité (cf TD)
+
+            \item Si $f$ est $\Co^2$, $\norm{\tilde U - U}_\infty \leq \norm{\tilde U - U}_2 = \frac{1}{\sqrt h} \norm{\tilde U - U}_h$ donne
+                $\norm{\tilde U - U}_\infty = \mathcal O (h^{3/2}))$
+
+                Nous verrons en TD comment obtenir un résultat de convergence
+                plus fort : $\norm{\tilde U - U}_\infty = \mathcal O (h^2)$.
+                Le principe est le même (stabilité + consistance en $\norm{.}_\infty \implies $ convergence)
+                mais la stabilité s'obtient d'une autre manière (en utilisant
+                le ``principe du maximum'').
+        \end{enumerate}
+    \end{remark}
+
+\section{Conclusion}
+
+La méthode des différences finies conduit à la résolution de
+\textbf{systèmes linéaires de grande taille} pour lesquels nous introduirons
+différents types d'outils. Bien sûr nous n'avons vu qu'une introduction
+aux différences finies. Cette méthode est beaucoup utilisée pour la résolution
+d'équation aux dérivées partielles, comme l'équation de la chaleur
+${\derpart{u}{t} = \derpart{^2u}{x^2}}$ ou l'équation de Poisson 
+${-\left( \derpart{^2 \phi}{x^2} + \derpart{^2 \phi}{y^2} \right) = f(x,y)}$
+
+\subsection*{Exemples de schémas pour ces deux équations}
+
+\begin{enumerate}[label=•]
+    \item \underline{Équation de la chaleur :}
+        \[
+            \frac{U_j^{n+1}- U_j^n}{\Delta t} = \frac{U_{j+1}^{n+1} - 2 U_j^{n+1} + U_{j-1}^{n+1}}{\Delta x^2}
+        \]
+
+        $U_j^n \simeq U(j\Delta x, n\Delta t) \hspace{1cm} U_j^0 = U(j \Delta x,0)$
+
+        Schéma \textbf{implicite} : $(U_j^{n+1})_j$ s'obtient à partir de $(U_j^n)_j$
+        en résolvant un système linéaire.
+
+    \item \underline{Équation de Poisson :}
+        \[
+            \frac{- \phi_{i+1,k} - \phi_{i,k+1} + 4 \phi_{i,k} - \phi_{i,k-1} - \phi_{i-1,?}}{h^2} = f_{i,k}
+        \]
+
+        $\phi_{i,k} \simeq \phi(ih,kh)$
+
+        $(\phi_{i,k})_{i,k}$ s'obtient en fonction de $(f_{i,k})_{i,k}$ en
+        résolvant un système linéaire.
+\end{enumerate}
