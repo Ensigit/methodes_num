@@ -174,3 +174,41 @@ Coût : $O(n^2)$
 Cette méthode se prête mal à la modification du nombre de points $X_i$, car elle force à recalculer tous les $L_i(X)$.
 
 
+\section {Méthode de Newton}
+
+Soient $(n + 1)$ points d'abscisses distinctes $X_0$, $\cdots$, $X_n$ d'ordonnées $Y_0$, $\cdots$, $Y_n$.
+
+\begin{fdef}
+On appelle base de Newton la base des polynômes :
+
+$N_0(X) = 1$
+
+$N_1(X) = (X - X_0)$
+
+$N_2(X) = (X - X_0) \cdot (X - X_1)$
+
+$\vdots$
+
+$N_n(X) = (X - X_0) \cdot (X - X_1) \cdots (X - X_{n - 1})$
+% $N_n(X) = \prod_{k = 0}^{n-1}(X - X_k)$
+\end{fdef}
+
+
+\begin{equation}
+    P_n(X) = \sum_{i = 0}^n \delta_{X_0 \cdots X_i}^i f \cdot N_i(X)
+\end{equation}
+
+On appelle différence divisée d'ordre $0, \cdots, n$ de la fonction f relativement aux abscisses $X_0$, $\cdots$, $X_n$ les expressions suivantes :
+
+
+\begin{itemize}
+\item différence divisée d'ordre 0 : $\delta_{X_i}^0 f = f(X_i) = Y_i$
+\item différence divisée d'ordre 1 : $\delta_{X_i,X_j}^1 f = \frac{f(X_j) - f(X_i)}{X_j - X_i} = \frac{Y_j - Y_i}{X_j - X_i}, i \ne j$
+\item différence divisée d'ordre 2 : $\delta_{X_i,X_j,X_k}^2 f = \frac{\delta_{X_j,X_k}^1 f - \delta_{X_i,X_j}^1 f}{X_k - X_i}$
+\\
+\\
+\vdots
+\item différence divisée d'ordre n : $\delta_{X_0,\cdots,X_n}^n f = \frac{\delta_{X_1,\cdots,X_n}^{n - 1} f - \delta_{X_0,\cdots,X_{n - 1}}^{n - 1} f}{X_n - X_0}$
+\end{itemize}
+
+
