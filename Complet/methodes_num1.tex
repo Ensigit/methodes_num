@@ -174,9 +174,11 @@ Coût : $O(n^2)$
 Cette méthode se prête mal à la modification du nombre de points $X_i$, car elle force à recalculer tous les $L_i(X)$.
 
 
+\newpage
+
 \section {Méthode de Newton}
 
-Soient $(n + 1)$ points d'abscisses distinctes $X_0$, $\cdots$, $X_n$ d'ordonnées $Y_0$, $\cdots$, $Y_n$.
+Soient $(n + 1)$ points d'abscisses distinctes $X_0$, $\cdots$, $X_n$ et d'ordonnées $Y_0$, $\cdots$, $Y_n$.
 
 \begin{fdef}
 On appelle base de Newton la base des polynômes :
@@ -189,17 +191,18 @@ $N_2(X) = (X - X_0) \cdot (X - X_1)$
 
 $\vdots$
 
-$N_n(X) = (X - X_0) \cdot (X - X_1) \cdots (X - X_{n - 1})$
 % $N_n(X) = \prod_{k = 0}^{n-1}(X - X_k)$
+$N_n(X) = (X - X_0) \cdot (X - X_1) \cdots (X - X_{n - 1})$
 \end{fdef}
 
 
+Polynôme d'interpolation :
 \begin{equation}
     P_n(X) = \sum_{i = 0}^n \delta_{X_0 \cdots X_i}^i f \cdot N_i(X)
 \end{equation}
 
-On appelle différence divisée d'ordre $0, \cdots, n$ de la fonction f relativement aux abscisses $X_0$, $\cdots$, $X_n$ les expressions suivantes :
 
+On appelle différence divisée d'ordre $0, \cdots, n$ de la fonction f relativement aux abscisses $X_0$, $\cdots$, $X_n$ les expressions suivantes :
 
 \begin{itemize}
 \item différence divisée d'ordre 0 : $\delta_{X_i}^0 f = f(X_i) = Y_i$
@@ -210,5 +213,94 @@ On appelle différence divisée d'ordre $0, \cdots, n$ de la fonction f relative
 \vdots
 \item différence divisée d'ordre n : $\delta_{X_0,\cdots,X_n}^n f = \frac{\delta_{X_1,\cdots,X_n}^{n - 1} f - \delta_{X_0,\cdots,X_{n - 1}}^{n - 1} f}{X_n - X_0}$
 \end{itemize}
+
+\bigbreak
+Calcul des coefficients de $P_n(X)$ par le tableau d'Aitken :
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.9]{2-interp-aitken.png}
+\end{figure}
+
+On admet le résultat que $P_n(X_i) = Y_i$ (démonstration par récurrence avec les formules de Newton).
+
+
+Formule de Newton : identité algébrique pour toute fonction f
+\begin{equation}
+    f(X) = TODO
+\end{equation}
+
+% exemple
+
+
+\subsection* {Résolution}
+
+\begin{itemize}
+\item Coût du tableau d'Aitken en $O(n^2)$ :
+
+$n + (n - 1) + \cdots + 2 + 1 = \sum_{i = 0}^n i = \frac{n (n + 1)}{2}$
+\item $O(n)$ : évaluation du polynôme
+\end{itemize}
+
+\bigbreak
+Cette méthode se prête à l'ajout de valeurs $(X_i, Y_i)$ à interpoler : il suffit de calculer autant de termes supplémentaires, alors qu'avec Vandermonde et Lagrange il faut tout recalculer.
+
+\bigbreak
+$\Rightarrow$ Donc la méthode de Newton est préférable à Vandermonde et Lagrange.
+
+% Graphique
+
+
+\section {Estimation de l'erreur}
+
+Soit $f \in C^{n + 1}([a,b])$.
+
+$\forall X \in [a,b], \xi \in [a,b]$, on a :
+
+\begin{equation}
+\varepsilon(X) = f(X) - P_n(X) = \frac{f^{n + 1}(\xi)}{(n + 1)!} \prod_{i = 0}^n (X - X_i)
+\end{equation}
+
+
+\section {Problème de convergence}
+
+\begin{equation}
+\varepsilon_n = f(X) - P_n(X)
+\end{equation}
+
+
+$\varepsilon_n$ ne tend pas vers 0 quand n tend vers l'infini.
+
+En effet, pour toute suite de $X_i$ on peut toujours construire une fonction continue pour laquelle l'interpolation polynomiale ne converge pas.
+
+
+\section {Phénomène de Runge}
+
+Il existe des fonctions qui montrent ce phénomène de convergence, exemple connu :
+\begin{equation}
+f(X) = \frac{1}{1 + X^2} \in [-5,5], f \in C^{\infty}
+\end{equation}
+
+% Graphique P4
+
+% Graphique P14
+
+
+\section* {Interpolation polynomiale}
+
+\begin{itemize}
+\item Adapté à un petit nombre n de valeurs à interpoler
+\item Peu adapté aux données bruitées
+\end{itemize}
+
+On observe des problèmes d'oscillation sinon.
+
+On peut diminuer ces problèmes avec un autre choix des abscisses $X_i$ (pas équidistantes), les abscisses de Tchebychev.
+
+
+\subsection* {Autre solution}
+
+Interpolation par splines (par morceaux) de base avec différents degrés (ex : 3, 5).
+
+% Graphique n = 3
 
 
