@@ -226,18 +226,32 @@ On admet le résultat que $P_n(X_i) = Y_i$ (démonstration par récurrence avec 
 
 Formule de Newton : identité algébrique pour toute fonction f
 \begin{equation}
-    f(X) = TODO
+    % f(X) = 1 \cdot f(X_0) + (X - X_0) \delta_{X_0,X_1}^1 f + \cdots + (X - X_0) \cdot (X - X_1) \cdots (X - X_{n - 1}) \delta_{X_0,\cdots,X_n}^n f\\
+    % + (X - X_0) \cdot (X - X_1) \cdots (X - X_n) \delta_{X,X_0,\cdots,X_n}^{n + 1} f
+    f(X) = N_0(X) \cdot f(X_0) + N_1(X) \cdot \delta_{X_0,X_1}^1 f + \cdots + N_n(X) \cdot \delta_{X_0,\cdots,X_n}^n f + N_{n + 1}(X) \cdot \delta_{X,X_0,\cdots,X_n}^{n + 1} f
 \end{equation}
 
-% exemple
+Le dernier élément de $f(X)$ correspond au \og reste \fg, de degré (n + 1) dans la base de Newton.
 
+
+\subsection* {Exemple}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1.0]{2-interp-exemple.png}
+\end{figure}
+
+\begin{equation}
+P_3(X) = -31 + 15 (X + 2) - 5 (X + 2) X + 2 (X + 2) X (X - 1)
+\end{equation}
 
 \subsection* {Résolution}
 
 \begin{itemize}
 \item Coût du tableau d'Aitken en $O(n^2)$ :
 
-$n + (n - 1) + \cdots + 2 + 1 = \sum_{i = 0}^n i = \frac{n (n + 1)}{2}$
+% $n + (n - 1) + \cdots + 2 + 1 = \sum_{i = 0}^n i = \frac{n (n + 1)}{2}$
+$n + (n - 1) + \cdots + 2 + 1 = \frac{n (n + 1)}{2}$
 \item $O(n)$ : évaluation du polynôme
 \end{itemize}
 
@@ -247,7 +261,7 @@ Cette méthode se prête à l'ajout de valeurs $(X_i, Y_i)$ à interpoler : il s
 \bigbreak
 $\Rightarrow$ Donc la méthode de Newton est préférable à Vandermonde et Lagrange.
 
-% Graphique
+% Graphique Hermik
 
 
 \section {Estimation de l'erreur}
@@ -257,12 +271,12 @@ Soit $f \in C^{n + 1}([a,b])$.
 $\forall X \in [a,b], \xi \in [a,b]$, on a :
 
 \begin{equation}
-\varepsilon(X) = f(X) - P_n(X) = \frac{f^{n + 1}(\xi)}{(n + 1)!} \prod_{i = 0}^n (X - X_i)
+%\varepsilon(X) = 
+f(X) - P_n(X) = \frac{f^{n + 1}(\xi)}{(n + 1)!} \prod_{i = 0}^n (X - X_i)
 \end{equation}
 
 
 \section {Problème de convergence}
-
 \begin{equation}
 \varepsilon_n = f(X) - P_n(X)
 \end{equation}
@@ -280,9 +294,10 @@ Il existe des fonctions qui montrent ce phénomène de convergence, exemple conn
 f(X) = \frac{1}{1 + X^2} \in [-5,5], f \in C^{\infty}
 \end{equation}
 
-% Graphique P4
-
-% Graphique P14
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{2-interp-runge.png}
+\end{figure}
 
 
 \section* {Interpolation polynomiale}
@@ -294,13 +309,13 @@ f(X) = \frac{1}{1 + X^2} \in [-5,5], f \in C^{\infty}
 
 On observe des problèmes d'oscillation sinon.
 
-On peut diminuer ces problèmes avec un autre choix des abscisses $X_i$ (pas équidistantes), les abscisses de Tchebychev.
+On peut diminuer ces problèmes avec un autre choix des abscisses $X_i$ (pas équidistantes) : les abscisses de Tchebychev.
 
 
 \subsection* {Autre solution}
 
 Interpolation par splines (par morceaux) de base avec différents degrés (ex : 3, 5).
 
-% Graphique n = 3
+% Graphique spline cubique
 
 
