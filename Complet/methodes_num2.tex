@@ -154,42 +154,62 @@ En effet, d'après \reff{eq:3} :
 \]
 (méthode de Richardson stationnaire, ou du gradient à pas fixe)
 
-Elle converge si et seulement si $\forall \lambda \in Sp(A), |1-\alpha \lambda | < 1$, c'est-à-dire toutes les valeurs propres de A se trouvent dans le disque (ouvert) de centre $(\frac{1}{\alpha}$ et rayon $\frac{1}{\alpha}$).
+Elle converge si et seulement si $\forall \lambda \in Sp(A), |1-\alpha \lambda | < 1$, c'est-à-dire toutes les valeurs propres de A se trouvent dans le disque (ouvert) de centre $(\frac{1}{\alpha}, 0)$ et de rayon $\left| \frac{1}{\alpha} \right|$.
 
 \section{Méthode de Jacobi}
-On pose dans schéma \reff{eq:2} :
+On pose dans le schéma \reff{eq:2} :
 \[
     M = D \mbox{ avec $D$ diagonale et } d_{ii}=a_{ii}, \qquad N=D-A
 \]
+
+On a donc :
+\begin{equation}
+D \cdot x_{k+1} = (D-A) \cdot x_k + b
+\end{equation}
+\begin{equation}
+x_{k+1} = (I - D^{-1}A) \cdot x_k + D^{-1} b
+\end{equation}
 
 \begin{remark}
     Cela suppose $a_{ii} \ne 0 \; \forall i$ (si cette condition n'est pas vérifiée on peut permuter des lignes de $A$).
 \end{remark}
 
+En notant $x_k = (x^{(k)}_1,\dots,x^{(k)}_n)$ on obtient pour $i=1 \cdots n$ :
+\begin{equation}
+x^{(k+1)}_i = - \sum_{j \ne i}\frac{a_{ij}}{a_{ii}} \cdot x_j^{(k)} + \frac{b_i}{a_{ii}}
+\end{equation}
+
 \begin{ftheo}
     Si $A$ est à diagonale strictement dominante ($\rightarrow a_{ii}>0$ et $D$ inversible) alors la méthode de Jacobi converge.
 \end{ftheo}
 
-La démonstration sera vue en TD. On montre que le rayon spectral de la matrice $J = D^{-1}(D-A) = I - DA$ est $< 1$.
+La démonstration sera vue en TD. On montre que le rayon spectral $\rho(J)$ de la matrice de Jacobi $J = D^{-1}N = D^{-1}(D-A) = I - D^{-1}A$ est $< 1$.
 
 Nous avons rencontré ce type de matrices pour la discrétisation de problèmes aux limites dans le $1^{er}$ chapitre du cours.
 
-\section{Méthodes de Gauss-Seidel et SOR}
+\section{Méthode de Gauss-Seidel}
 
-On pose $A = D + L + U$ avec :
+On suppose $a_{ii} \ne 0$, $\forall i = 1 \cdots n$.
+\begin{itemize}
+\item Méthode souvent plus rapidement convergente que celle de Jacobi
+\item + économique en terme de stockage : un seul vecteur à stocker pour le calcul de l'itéré suivant
+\item Converge pour les matrices symétriques définies positives (pas le cas pour Jacobi)
+\end{itemize}
+
+On pose $A = L + D + U$ avec :
 
 \[
-   D =
-   \begin{pmatrix}
-       a_{00} & \cdots                      & 0      \\ 
-       \vdots & a_{ii}\hspace{-0.5cm}\ddots & \vdots \\ 
-       0      & \cdots                      & a_{nn}
-   \end{pmatrix} 
-   , L =
+   L =
    \begin{pmatrix}
         0        & \cdots & 0      \\
         \vdots   & \ddots & \vdots \\
         a_{ij}(i>j)      & \cdots & 0
+   \end{pmatrix}
+   , D =
+   \begin{pmatrix}
+       a_{11} & \cdots                      & 0      \\ 
+       \vdots & a_{ii}\hspace{-0.5cm}\ddots & \vdots \\ 
+       0      & \cdots                      & a_{nn}
    \end{pmatrix}
    , U =
    \begin{pmatrix}
@@ -203,14 +223,32 @@ Dans la méthode de Gauss-Seidel, on fixe :
 \[
     M = D+L, \; N = -U
 \]
+\[
+    \Rightarrow A = M - N
+\]
+
 La méthode s'écrit donc :
 \[
     Dx_{k+1} = -Lx_{k+1}-Ux_k + b
 \]
-En notant $x_k = (x^{(k)}_1,\dots,x^{(k)}_n)$ on obtient pour $i=1..n$ :
+En notant $x_k = (x^{(k)}_1,\dots,x^{(k)}_n)$ on obtient pour $i = 1 \cdots n$ :
 \[
     a_{ii}x^{(k+1)}_i = - \sum_{j<i}a_{ij}x_j^{(k+1)} - \sum_{(j>i)}a_{ij}x_j^{(k)} + b_i
 \]
+
+\begin{ftheo}
+    Si $A$ est à diagonale strictement dominante alors la méthode de Gauss-Seidel converge.
+\end{ftheo}
+
+\begin{ftheo}
+    Si $A$ est symétrique définie positive (SDP) alors la méthode de Gauss-Seidel converge.
+\end{ftheo}
+
+A est SDP $\Leftrightarrow$ $^txAx > 0, \forall x \ne 0$
+
+
+\section{Méthode SOR}
+
 Les méthodes de Jacobi et Gauss-Seidel ne sont guère utilisées. On leur préfère la méthode de relaxation.
 
 La méthode SOR (``successive over-relaxation'', ou ``méthode de relaxation'', environ 1950) généralise Gauss-Seidel en introduisant un paramètre de relaxation $\omega \ne 0$,
