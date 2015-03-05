@@ -1,4 +1,4 @@
-\chapter{Méthodes itératives pour des systèmes linéaires}
+\chapter{Méthodes itératives pour les systèmes linéaires}
 
 On sait aujourd'hui résoudre numériquement des systèmes linéaires de l'ordre du million d'inconnues (et d'équations). Pour des \textbf{systèmes creux}, c'est-à-dire lorsque la matrice du système possède beaucoup de coefficients nuls, on arrive à une centaine de millions d'inconnues.
 Les \textbf{systèmes pleins} font appel à des \textbf{méthodes directes}, qui donnent la solution exacte (aux erreurs d'arrondi près) en un nombre fini d'itérations, et seront décrites dans un chapitre ultérieur.
@@ -247,57 +247,81 @@ En notant $x_k = (x^{(k)}_1,\dots,x^{(k)}_n)$ on obtient pour $i = 1 \cdots n$ :
 A est SDP $\Leftrightarrow$ $^txAx > 0, \forall x \ne 0$
 
 
-\section{Méthode SOR}
+\newpage
+
+\section{Méthode de relaxation}
 
 Les méthodes de Jacobi et Gauss-Seidel ne sont guère utilisées. On leur préfère la méthode de relaxation.
 
-La méthode SOR (``successive over-relaxation'', ou ``méthode de relaxation'', environ 1950) généralise Gauss-Seidel en introduisant un paramètre de relaxation $\omega \ne 0$,
+La méthode SOR (``successive over-relaxation'', ou ``méthode de relaxation'', environ 1950) généralise Gauss-Seidel en introduisant un \textbf{paramètre de relaxation $\omega$} $\ne 0$,
 que l'on ajuste afin d'accélérer la convergence de la méthode (avec un gain généralement très important si $\omega$ est bien choisi).
 
-Pour $i=1,\dots,n$
+\begin{center}
+$\forall i = 1 \cdots n$ :
+\end{center}
 \begin{equation}
 \left\lbrace
 \begin{array}{ccc}
-    a_{ii}\tilde{x}_i^{(k+1)} & = & -\sum_{j<i} a_{ij}x_j^{(k+1)} - \sum_{j>i}a_{ij}x_j^{(k)} + b_i\\
-    x_i^{(k+1)} & = & \omega \tilde{x_i}^{(k+1)} + (1-\omega)x_i^{(k)}
+    a_{ii} \cdot \tilde{x}_i^{(k+1)} & = & -\sum_{j<i} a_{ij} \cdot x_j^{(k+1)} - \sum_{j>i}a_{ij} \cdot x_j^{(k)} + b_i\\
+    x_i^{(k+1)} & = & \omega \cdot \tilde{x_i}^{(k+1)} + (1-\omega) \cdot x_i^{(k)}
     \label{eq:4}
 \end{array}\right.
 \end{equation}
-(Gauss-Seidel correspond à $\omega = 1$)
 
-La méthode s'écrit (multiplier la seconde ligne par $a_{ii}$, et remplacer $a_{ii}\tilde{x_i}^{(k+1)}$ par son expression en fonction de $x_{k+1}$ et $x_k$)
+\begin{center}
+\underline {$\omega = 1$} $\Rightarrow$ Gauss-Seidel
+\end{center}
+% (Gauss-Seidel correspond à $\omega = 1$)
+
+
+\subsection {Reformulation matricielle}
+\begin{equation*}
+A = L + D + U
+\end{equation*}
+
+On multiplie la seconde ligne par $a_{ii}$ et on écrit matriciellement le système pour $i = 1 \cdots n$ :
 
 \[
-    Dx_{k+1}=(1-\omega)Dx_k - \omega L x_{k+1} - \omega U x_k + \omega b
+    D \cdot x^{(k+1)}= - \omega L x^{(k+1)} - \omega U x^{(k)} + \omega b + (1-\omega) D x^{(k)}
 \]
 
 soit
 
 \[
-    (D + \omega L)x_{k+1} = [(1-\omega)D - \omega U]x_k + \omega b
+    (\frac{1}{\omega}D + L) \cdot x^{(k+1)} = \left [\frac{1-\omega}{\omega} D - U \right] x^{(k)} + b
 \]
 
-On a donc : 
+Le schéma s'écrit :
 \[
-    M = \frac{1}{\omega}D + L, N = \frac{1-\omega}{\omega}D - U, M-N=D+L+U=A
+    M \cdot x^{(k+1)} = N \cdot x^{(k)} + b
 \]
-
-On note :
 \[
-    \mathcal{L}_{\omega} := (\frac{1}{\omega}D + L)^{-1}(\frac{1-\omega}{\omega}D - U)
+    M = \frac{1}{\omega}D + L, N = \frac{1-\omega}{\omega} D - U
 \]
-SOR converge si $\rho(\mathcal{L}_{\omega}<1$)
+\[
+    \Rightarrow M - N = L + D + U = A
+\]
 
-\begin{ftheo}[demo en TD]
+Soit :
+\[
+    \mathcal{L}_{\omega} = (\frac{1}{\omega}D + L)^{-1}(\frac{1-\omega}{\omega}D - U) = M^{-1} \cdot N
+\]
+La méthode de relaxation converge si $\rho(\mathcal{L}_{\omega}) < 1$ et plus $\rho$ est petit, plus la convergence est rapide.
+
+$\newline$
+On suppose $a_{ii} \ne 0$, $\forall i = 1 \cdots n$ (comme précédemment).
+\begin{ftheo}
+~
     \begin{enumerate}
         \item
-            Soit $A \in M_n(\R)$ inversible, avec $\forall i, a_{ii} \ne 0$
-            Une condition nécessaire pour que SOR converge est que $\omega \in ]0,2[$.
+            Une condition nécessaire pour que la méthode de relaxation converge est $\omega \in ]0,2[$
 
         \item
-            Si A est symétrique définie positive, alors $\forall \omega \in ]0,2[$, SOR converge 
+            Si A est symétrique définie positive, alors $\forall \omega \in ]0,2[$ la méthode de relaxation converge.
     \end{enumerate}
 \end{ftheo}
+
+% 1) [demo en TD]
 
 \begin{rappel}
     $A$ est symétrique définie positive si $A$ est symétrique, $^txAx = 0 \Rightarrow x = 0$, et $\forall x \in \R^n, {}^t\!xAx \geq 0$
