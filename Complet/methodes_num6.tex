@@ -7,9 +7,8 @@ $f : [a,b] \times \R^n \longrightarrow \R^n$ de classe $\mathcal{C}^0$
 \begin{equation*}
     \begin{array}{cc}
         \boxed{\begin{aligned}
-            y'(t)  & = & f(t,y(t)) \\
-            y(t_0) & = & y_0 \\
-            t \in [a,b]
+            y'(t)  & = & f(t,y(t)), t \in [a,b] \\
+            y(a) & = & y_0 \hspace{2.5cm}
         \end{aligned}}
         & \hspace{1cm}
         \parbox{5cm}{\textbf{Problème différentiel de condition initiale (problème de Cauchy})}
@@ -27,7 +26,7 @@ où $[a,b] \subset \R$
 
 Résoudre le problème c'est donc déterminer une application $y$, si elle existe, qui est solution de 
 l'équation différentielle $y'(t) = f(t,y(t))$ et qui prend la valeur numérique donnée 
-$y_0$ à l'instant initial $t=t_0$
+$y_0$ à l'instant initial $t = t_0 = a$.
 
 \subsection*{Domaines d'application :}
 \begin{enumerate}[label=-]
@@ -53,16 +52,18 @@ $y_0$ à l'instant initial $t=t_0$
 \end{enumerate}
 
 \begin{ftheo}[Cauchy-Lipschitz : Existence + Unicité]
+$\vspace{0.2cm}$
+\newline
     Soit ${f : [a,b] \times \R^n \longrightarrow \R^n}$ de classe $\mathcal{C}^0$ et vérifiant
     la propriété suivante :
 
-    Il existe une constante $L \in \R$ telle que :
+    Il existe une constante $L \in \R^+$ telle que :
         \begin{equation*}
-            \forall t \in [a,b], \forall y_1, y_2 \in \R^n, \hspace{1cm} \norm{f(t,y_1) - f(t,y_2)} \leq L \norm{y_1 - y_2}
+            \forall t \in [a,b], \forall y, z \in \R^n, \hspace{1cm} \norm{f(t,y) - f(t,z)} \leq L \norm{y - z}
         \end{equation*}
 
         Alors quelque soit $t_0 \in [a,b]$ et $y_0 \in \R^n$, il existe une unique fonction
-        ${y : [a,b] \longrightarrow \R^n}$ avec
+        ${y : [a,b] \longrightarrow \R^n}$ avec :
     \begin{enumerate}[label=(\roman*)]
         \item $y(t)$ est de classe $\mathcal{C}^1$ sur $[a,b]$
         \item $y'(t) = f(t,y(t))$ pour $t \in [a,b]$

@@ -323,6 +323,10 @@ On suppose $a_{ii} \ne 0$, $\forall i = 1 \cdots n$ (comme précédemment).
 
 % 1) [demo en TD]
 
+\begin{ftheo}
+    Si A est à diagonale strictement dominante et $\omega \in ]0,1]$ alors la méthode de relaxation converge.
+\end{ftheo}
+
 \begin{rappel}
     $A$ est symétrique définie positive si $A$ est symétrique, $^txAx = 0 \Rightarrow x = 0$, et $\forall x \in \R^n, {}^t\!xAx \geq 0$
 \end{rappel}
@@ -335,7 +339,7 @@ On suppose $a_{ii} \ne 0$, $\forall i = 1 \cdots n$ (comme précédemment).
 \begin{remark}
     \begin{enumerate}
         \item Il y a des exemples où $A$ est symétrique définie positive et où la méthode de Jacobi n'est pas convergente.
-        \item Si A est tridiagonale ($a_{ij}=0$ si $\abs{i-j}>1$) et $D$ inversible, on peut montrer que $\rho(\mathcal{L}_1)=\rho(J)^2$. Donc la méthode de Gauss-Seidel converge si et seulement si celle de Jacobi converge (et Gauss-Seidel converge plus vite).
+        \item Si A est tridiagonale ($a_{ij}=0$ si $\abs{i-j}>1$) et $D$ inversible, on peut montrer que $\rho(\mathcal{L}_1)=\rho(J)^2$, avec $J = I - D^{-1} A$. Donc la méthode de Gauss-Seidel converge si et seulement si celle de Jacobi converge (et Gauss-Seidel converge plus vite).
         \item  Pour quelques types de matrices, on connaît la valeur de $\omega$ qui minimise $\rho (\mathcal{L}_{\omega})$.
             Pour $A$ tridiagonale (avec $D$ inversible), et si les valeurs propres de $J$ sont réelles, alors le paramètre de relaxation optimal dans SOR (c'est-à-dire la valeur de $\omega$ qui minimise $\rho (\mathcal{L}_{\omega})$) est > 1 (donc Gauss-Seidel ne donne pas la vitesse optimale de convergence).
         \item Pour optimiser empiriquement le choix de $\omega$ dans SOR, on peut évaluer le facteur de contractivité $\frac{\| x_{k+1} - x_k\|}{\| x_k - x_{k-1}\|}$ à partir du moment où $\|x_{k+1}-x_{k}\|$ décroît vers 0.

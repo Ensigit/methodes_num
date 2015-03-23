@@ -102,33 +102,35 @@ T peut être calculé à partir d'une factorisation LU, mais on expose ici une m
 Puisque $A = T \tpo{T}$ avec $T$ triangulaire inférieure :
 
 \[
-    a_{ij} = \sum_{1 \leq k \leq \Min(i,j)} t_{ik} t_{jk}
+    a_{ij} = \sum_{k = 1}^{\Min(i, j)} t_{ik} \cdot t_{jk}
 \]
 
 \begin{enumerate}[label=-]
-    \item Calculons la 1\up{ère} colonne de $T$ à partir de celle de $A$ :
+    \item Calcul de la colonne 1 de $T$ :
         \[
-            a_{11} = t_{11}^2 \implies t_{11} = \sqrt{a_{11}} \hspace{1cm} 
+            a_{11} = t_{11}^2 \implies \fbox{$t_{11} = \sqrt{a_{11}}$} \hspace{1cm} 
             \text{($a_{11} > 0$ car $A$ symétrique définie positive)}
         \]
         Pour $i \geq 2$ :
         \[
-            a_{i1} = t_{i1} t_{11} \implies t_{i1} = \frac{a_{i1}}{t_{11}}
+            a_{i1} = t_{i1} \cdot t_{11} \implies \fbox{$t_{i1} = \frac{a_{i1}}{t_{11}}$}
         \]
-    \item Supposons connues les colonnes $1$ à $p$ de $T$, et calculons la colonne $p+1$ :
+    \item Supposons connues les colonnes $1$ à $p$ de $T$.
+
+Calcul la colonne $p+1$ :
         \begin{align*}
             & a_{p+1,p+1} = t_{p+1,p+1}^2 + \sum_{1 \leq k \leq p}(t_{p+1,k})^2 \to
             \text{calculés précédemment (colonnes 1 à $p$)} \\
             \implies & t_{p+1,p+1}^2 = a_{p+1,p+1} - \sum_{1 \leq k \leq p}(t_{p+1,k})^2 > 0 \hspace{0.5cm} \text{\underline{puisque $T$ existe}} \\
-            \implies & t_{p+1,p+1} = \left(a_{p+1,p+1} - \sum_{1 \leq k \leq p}(t_{p+1,k})^2)\right)^{\frac{1}{2}}
+            \implies & t_{p+1,p+1} = \left(a_{p+1,p+1} - \sum_{1 \leq k \leq p}(t_{p+1,k})^2\right)^{\frac{1}{2}}
         \end{align*}
 
         Pour $i \geq p+2$ :
         \begin{equation*}
             \begin{split}
-                & a_{i,p+1} = t_{i,p+1} t_{p+1,p+1} + \sum_{1 \leq k \leq p}(t_{ik} t_{p+1,k})
+                & a_{i,p+1} = t_{i,p+1} \cdot t_{p+1,p+1} + \sum_{1 \leq k \leq p}(t_{ik} \cdot t_{p+1,k})
             \hspace{1cm} \to \text{(calculés précédemment)} \\
-                \implies & t_{i,p+1} = (a_{i,p+1} - \sum_{1 \leq k \leq p} t_{ik}t_{p+1,r} \frac{1}{t_{p+1,p+1}})
+                \implies & t_{i,p+1} = \frac{1}{t_{p+1,p+1}} \left ( a_{i,p+1} - \sum_{1 \leq k \leq p} t_{ik} \cdot t_{p+1,k} \right )
             \end{split}
         \end{equation*}
 
