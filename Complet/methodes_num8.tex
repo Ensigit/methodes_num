@@ -1,0 +1,133 @@
+\chapter{Rappels}
+
+\section{Matrice Jacobienne}
+
+La matrice jacobienne est la matrice des dérivées partielles du premier ordre d'une fonction vectorielle.
+
+Soit F une fonction d'un ouvert de $\mathbb{R}^n$ à valeurs dans $\mathbb{R}^m$. Une telle fonction est définie par ses m fonctions composantes à valeurs réelles :
+
+\begin{equation*}
+F : \begin{pmatrix}x_1\\\vdots\\x_n\end{pmatrix} \longmapsto \begin{pmatrix}
+f_1(x_1,\dots,x_n)\\
+\vdots\\
+f_m(x_1,\dots,x_n)\end{pmatrix}
+\end{equation*}
+\\
+
+Les dérivées partielles de ces fonctions en un point M, si elles existent, peuvent être rangées dans une matrice à m lignes et n colonnes, appelée matrice jacobienne de F :
+
+\begin{equation*}
+J_F\left(M\right)=
+\begin{pmatrix} 
+\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n}
+\end{pmatrix}
+\end{equation*}
+\\
+
+On suppose maintenant que $m = n$. On appelle jacobien de $f$ le déterminant de sa matrice jacobienne noté : $\det( J_F )$.
+
+
+
+\section{Valeurs propres d'une matrice}
+
+Les valeurs propres $\lambda$ et le vecteur propre $x$ d'une matrice A respectent :
+\begin{equation*}
+(A - \lambda I) \, x = 0
+\end{equation*}
+
+On les calcule en résolvant l'équation :
+\begin{equation*}
+\det(A - \lambda I) = 0
+\end{equation*}
+
+
+\section{Calcul du déterminant}
+
+Pour toute matrice carrée de la forme : 
+
+\begin{equation*}
+A = \begin{pmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn} \end{pmatrix}
+\end{equation*}
+
+Le déterminant est :
+
+\begin{equation*}
+\det(A) = \begin{vmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn} \end{vmatrix}
+\end{equation*}
+
+
+\subsection{Dimension 2}
+
+\begin{equation*}
+\begin{vmatrix}a&b\\c&d\end{vmatrix} = \, ad - bc
+\end{equation*}
+
+
+\subsection{Dimension 3}
+
+\begin{equation*}
+\begin{vmatrix}a&b&c\\d&e&f\\g&h&i\end{vmatrix} =
+\begin{array}{cc}
+\, \, \, \, \, \, \, a \, e \, i + b \, f \, g + c \, d \, h\\
+- \, g \, e \, c - h \, f \, a - i \, d \, b
+\end{array}
+% \, \, \, \, \, \, \, a \, e \, i + b \, f \, g + c \, d \, h\\
+% &\, \, \, \, \, \, \, \, - g \, e \, c - h \, f \, a - i \, d \, b
+% &\, \, \, \, \, \, \, \, - (g\cdot e\cdot c + h\cdot f\cdot a + i\cdot d\cdot b)
+\end{equation*}
+
+
+\subsection{Dimension n}
+
+Pour tout i et j, on note $A_{ij}$ la matrice obtenue en enlevant à A sa i-ième ligne et sa j-ième colonne :
+
+\begin{equation*}
+A_{ij}=\begin{pmatrix}a_{1,1} & \dots & a_{1,j-1}& a_{1,j+1}& \dots & a_{1,n} \\\vdots & & \vdots &  \vdots& &\vdots\\
+a_{i-1,1} & \dots & a_{i-1,j-1}& a_{i-1,j+1}& \dots & a_{i-1,n} \\
+a_{i+1,1} & \dots & a_{i+1,j-1}& a_{i+1,j+1}& \dots & a_{i+1,n} \\
+\vdots & & \vdots & \vdots &&\vdots\\
+a_{n,1} & \dots & a_{n,j-1}& a_{n,j+1}& \dots & a_{n,n}\end{pmatrix} 
+\end{equation*}
+
+
+On peut alors développer le calcul du déterminant de A suivant une ligne ou une colonne.
+\\
+
+Développement suivant la ligne $i$ :
+\begin{equation*}
+\large{\fbox{$\det(A)=\sum \limits_{j=1}^{n} a_{ij} \cdot (-1)^{i+j} \cdot \det(A_{ij})$}}
+\end{equation*}
+
+Le terme $(-1)^{i+j} \cdot \det(A_{i,j})$ est appelé cofacteur du terme $a_{ij}$.
+
+
+
+\section{Inverse d'une matrice}
+
+Une matrice carrée $M$ est inversible si et seulement si son déterminant est non nul :
+\begin{equation*}
+\exists M^{-1} \iff \det(M) \ne 0
+\end{equation*}
+
+
+
+\section{Matrice définie positive}
+
+Une matrice $M$ est dite définie positive si toutes ses valeurs propres sont strictement positives, c'est-à-dire :
+\begin{equation*}
+\mathrm{Sp}(M) \subset\,\, ]0, +\infty[
+\end{equation*}
+
+
+\section{Matrice symétrique}
+
+Une matrice $M$ est dite symétrique si $\forall (i, j), m_{ij} = m_{ji}$.
+
+
+\section{Matrice symétrique définie positive}
+
+Une matrice $M$ est dite symétrique définie positive (SDP) si elle est définie positive et symétrique.
+
+
